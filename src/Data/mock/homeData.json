@@ -1,0 +1,151 @@
+{
+  "banners": [
+    {
+      "_id": "b1",
+      "title": "50% OFF on First Order",
+      "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600",
+      "link": "Offers"
+    },
+    {
+      "_id": "b2",
+      "title": "Free Delivery Special",
+      "imageUrl": "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600",
+      "link": "Offers"
+    },
+    {
+      "_id": "b3",
+      "title": "Weekend Feast",
+      "imageUrl": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600",
+      "link": "Offers"
+    }
+  ],
+  "categories": [
+    {
+      "_id": "c1",
+      "name": "Pizza",
+      "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=200"
+    },
+    {
+      "_id": "c2",
+      "name": "Burgers",
+      "image": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200"
+    },
+    {
+      "_id": "c3",
+      "name": "Biryani",
+      "image": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200"
+    },
+    {
+      "_id": "c4",
+      "name": "Chinese",
+      "image": "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?w=200"
+    },
+    {
+      "_id": "c5",
+      "name": "Desserts",
+      "image": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=200"
+    },
+    {
+      "_id": "c6",
+      "name": "Drinks",
+      "image": "https://images.unsplash.com/photo-1544145945-f90425340c7e?w=200"
+    }
+  ],
+  "sections": {
+    "recommendedForYou": [
+      {
+        "_id": "r1",
+        "id": "r1",
+        "name": "The Food Haven",
+        "logo": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500",
+        "coverImage": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500",
+        "rating": 4.8,
+        "ratingCount": 240,
+        "cuisines": ["Italian", "Continental"],
+        "deliveryTime": "25-30 min",
+        "distance": "2.1 km",
+        "priceForTwo": 450,
+        "isVeg": false,
+        "offers": ["20% OFF", "Free Delivery"]
+      },
+      {
+        "_id": "r2",
+        "id": "r2",
+        "name": "Burger Club",
+        "logo": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=500",
+        "coverImage": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=500",
+        "rating": 4.5,
+        "ratingCount": 180,
+        "cuisines": ["Burgers", "Fast Food"],
+        "deliveryTime": "20-25 min",
+        "distance": "1.5 km",
+        "priceForTwo": 300,
+        "isVeg": false,
+        "offers": ["Free Fries"]
+      }
+    ],
+    "exploreRestaurants": [
+      {
+        "_id": "r1",
+        "id": "r1",
+        "name": "The Food Haven",
+        "logo": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500",
+        "coverImage": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500",
+        "rating": 4.8,
+        "ratingCount": 240,
+        "cuisines": ["Italian", "Continental"],
+        "deliveryTime": "25-30 min",
+        "distance": "2.1 km",
+        "priceForTwo": 450,
+        "isVeg": false
+      },
+      {
+        "_id": "r2",
+        "id": "r2",
+        "name": "Burger Club",
+        "logo": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=500",
+        "coverImage": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=500",
+        "rating": 4.5,
+        "ratingCount": 180,
+        "cuisines": ["Burgers", "Fast Food"],
+        "deliveryTime": "20-25 min",
+        "distance": "1.5 km",
+        "priceForTwo": 300,
+        "isVeg": false
+      },
+      {
+        "_id": "r3",
+        "id": "r3",
+        "name": "Royal Biryani House",
+        "logo": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500",
+        "coverImage": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500",
+        "rating": 4.9,
+        "ratingCount": 420,
+        "cuisines": ["Biryani", "Mughlai"],
+        "deliveryTime": "30-35 min",
+        "distance": "3.2 km",
+        "priceForTwo": 550,
+        "isVeg": false
+      },
+      {
+        "_id": "r4",
+        "id": "r4",
+        "name": "Green Bowl Salads",
+        "logo": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=500",
+        "coverImage": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=500",
+        "rating": 4.6,
+        "ratingCount": 95,
+        "cuisines": ["Healthy", "Salads"],
+        "deliveryTime": "15-20 min",
+        "distance": "1.2 km",
+        "priceForTwo": 350,
+        "isVeg": true
+      }
+    ],
+    "popularRestaurants": [],
+    "fastDelivery": [],
+    "freeDelivery": [],
+    "newOnPlatform": [],
+    "recentRestaurants": []
+  }
+}

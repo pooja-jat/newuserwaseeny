@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "547741445592",
+    "project_id": "wasseny-backend",
+    "storage_bucket": "wasseny-backend.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:547741445592:android:3e0e440820438cd5e516ad",
+        "android_client_info": {
+          "package_name": "com.newwasseny.user"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtTWWlrnxsIG18O_z5i-ZsiEpUvFZIU6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
