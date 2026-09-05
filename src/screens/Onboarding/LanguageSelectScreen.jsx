@@ -16,9 +16,10 @@ import * as RNLocalize from 'react-native-localize';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Check } from 'lucide-react-native';
-import LogoIcon from '../../assets/icons/LogoIcon.svg';
+import { COLORS } from '../../theme/colors';
 
 const { width, height } = Dimensions.get('window');
+
 
 const LANGUAGES = [
   { code: 'en', label: 'English' },
@@ -114,7 +115,7 @@ export default function LanguageSelectScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.background,
     width: '100%',
     height: '100%',
   },
@@ -149,12 +150,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#111',
+    color: COLORS.textDark,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 14,
-    color: '#777',
+    color: COLORS.textSecondary,
     textAlign: 'center',
     lineHeight: 20,
     marginTop: 10,
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
   
   langCard: {
     borderWidth: 1,
-    borderColor: '#DADADA',
+    borderColor: COLORS.border,
     borderRadius: 18,
     paddingVertical: 18,
     paddingHorizontal: 16,
@@ -174,17 +175,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
   },
   langSelected: {
-    backgroundColor: '#000',
-    borderColor: '#000',
-    shadowColor: '#000',
-    shadowOpacity: 0.18,
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
+    shadowColor: COLORS.primary,
+    shadowOpacity: 0.25,
     shadowRadius: 12,
     shadowOffset: { width: 0, height: 6 },
     elevation: 6,
   },
   langText: {
     fontSize: 16,
-    color: '#333',
+    color: COLORS.textDark,
     fontWeight: '600',
   },
   langTextSelected: {
@@ -212,15 +213,21 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   btn: {
-    backgroundColor: '#ed1c24',
+    backgroundColor: COLORS.primary,
     borderRadius: 14,
     paddingVertical: 16,
     alignItems: 'center',
     marginTop: 0,
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4,
   },
   btnText: {
     color: '#FFF',
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '700',
   },
 });
+

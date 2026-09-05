@@ -13,13 +13,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import { login, checkVerificationStatus } from '../../services/authService';
-import LogoIcon from '../../assets/icons/LogoIcon.svg';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import MaterialTextInput from "../../components/input/MaterialTextInput"
+import MaterialTextInput from "../../components/input/MaterialTextInput";
 import { useAuth } from '../../context/AuthContext';
 import { wp, hp } from '../../utils/responsive';
 import { scale } from '../../utils/scale';
 import { FONT_SIZES as FONT } from '../../theme/typography';
+import { COLORS } from '../../theme/colors';
             
 export default function LoginScreen() {
   const [email, setEmail] = useState('lakshykod@gmail.com');
@@ -33,7 +33,6 @@ export default function LoginScreen() {
   const route = useRoute();
   const { login } = useAuth();
 
-
   useEffect(() => {
     const prefillEmail = route?.params?.email || route?.params?.prefillEmail;
     if (prefillEmail) setEmail(prefillEmail);
@@ -45,18 +44,17 @@ export default function LoginScreen() {
       offlineAccess: true,
     });
   }, []);
+
   const signInWithGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-
       console.log('Google User:', userInfo);
-
-
     } catch (error) {
       console.log('Google Sign-In Error:', error);
     }
   };
+
   const handleEmailChange = text => {
     const value = text ?? '';
     const digitsOnly = value.replace(/\D/g, '');
@@ -64,14 +62,11 @@ export default function LoginScreen() {
       setEmail(digitsOnly.slice(0, 16));
       return;
     }
-
     setEmail(value);
   };
 
-
   const validate = () => {
     let valid = true;
-    
     if (!email) {
       setEmailError('Email is required');
       valid = false;
@@ -93,21 +88,20 @@ export default function LoginScreen() {
     }
     return valid;
   };
+
   const handleLogin = async () => {
     if (!validate()) return;
-
     setIsLoading(true);
 
     try {
       const result = await login(email, password);
-     console.log("Login result", result)
+      console.log("Login result", result);
       if (result.success) {
         Toast.show({
           type: 'topSuccess',
           text1: 'Login Successful',
           text2: 'Welcome back!',
         });
-
         navigation.replace('MainTabs');
       } else {
         Toast.show({
@@ -126,6 +120,7 @@ export default function LoginScreen() {
       setIsLoading(false);
     }
   };
+
   return (
     <View style={styles.safe}>
       <KeyboardAvoidingView
@@ -143,54 +138,59 @@ export default function LoginScreen() {
           <View style={styles.headerOverlay} />
           <View style={styles.headerBottomFade} />
 
-          <LogoIcon width={wp(50)} height={hp(18.75)} style={styles.logo} />
+          <Image
+            source={require('../../assets/images/ECDKART_Logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
         </View>
 
-       
         <View style={styles.content}>
           <Text style={styles.title}>Welcome Back!</Text>
           <Text style={styles.subtitle}>
             Log in to continue your meal journey
           </Text>
 
- <MaterialTextInput
+          <MaterialTextInput
             label="Email"
             value={email}
-             onChangeText={handleEmailChange}
+            onChangeText={handleEmailChange}
             placeholder="Enter your email"
-            keyboardType="email-address"
-            autoCapitalize="none"
             error={!!emailError}
             errorText={emailError}
+            keyboardType="email-address"
+            autoCapitalize="none"
           />
-            <MaterialTextInput
+
+          <MaterialTextInput
             label="Password"
             value={password}
             onChangeText={setPassword}
             placeholder="Enter your password"
-            showPasswordToggle
+            secureTextEntry={!showPassword}
             error={!!passwordError}
             errorText={passwordError}
+            rightIcon={showPassword ? 'eye-off' : 'eye'}
+            onRightIconPress={() => setShowPassword(!showPassword)}
           />
-          <Text
-            style={styles.forgot}
-            onPress={() => navigation.navigate('ForgetPass')}
-          >
-            Forgot password?
-          </Text>
+
+          <Pressable onPress={() => navigation.navigate('ForgetPass')}>
+            <Text style={styles.forgot}>Forgot Password?</Text>
+          </Pressable>
 
           <Pressable
             style={[styles.btn, isLoading && styles.btnDisabled]}
             onPress={handleLogin}
+            disabled={isLoading}
           >
             <Text style={styles.btnText}>
-              {isLoading ? 'Logging in...' : 'Login'}
+              {isLoading ? 'Logging in...' : 'Log In'}
             </Text>
           </Pressable>
 
           <View style={styles.orRow}>
             <View style={styles.orLine} />
-            <Text style={styles.orText}>or</Text>
+            <Text style={styles.orText}>OR</Text>
             <View style={styles.orLine} />
           </View>
 
@@ -204,12 +204,12 @@ export default function LoginScreen() {
           </Pressable>
 
           <Text style={styles.footer}>
-            Don’t have an account?{' '}
+            Don't have an account?{' '}
             <Text
               style={styles.register}
-              onPress={() => navigation.replace('Signup')}
+              onPress={() => navigation.navigate('Signup')}
             >
-              Register Now
+              Sign Up
             </Text>
           </Text>
         </View>
@@ -221,23 +221,18 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: COLORS.background,
   },
-
   container: {
     flex: 1,
   },
-
   header: {
     width: '100%',
-    height: hp(66), 
-    overflow: 'hidden',
-    borderBottomLeftRadius: scale(34),
-    borderBottomRightRadius: scale(34),
-    position: 'absolute',
-
+    height: hp(26),
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
   },
-
   topImage: {
     width: '100%',
     height: '100%',
@@ -245,136 +240,88 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
   },
-
   headerOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(255,255,255,0.55)',
+    backgroundColor: 'rgba(255,255,255,0.65)',
   },
-
   headerBottomFade: {
     position: 'absolute',
     left: 0,
     right: 0,
     bottom: 0,
     height: hp(8.75),
-    backgroundColor: 'rgba(255,255,255,0.72)',
+    backgroundColor: 'rgba(245,250,248,0.85)',
   },
-
   logo: {
     alignSelf: 'center',
-    width: wp(50),
-    height: hp(11.25),
-    marginTop: hp(6.25),
+    width: wp(60),
+    height: hp(14),
+    marginTop: hp(4),
   },
-
-  
   content: {
     flex: 1,
     paddingHorizontal: wp(6.67),
-    paddingTop: hp(22.5),
+    paddingTop: hp(2),
     zIndex: 1,
   },
-
   title: {
     fontSize: FONT.xxl,
-    fontWeight: '600',
+    fontWeight: '700',
     textAlign: 'center',
-    color: '#111',
+    color: COLORS.textDark,
   },
-
   subtitle: {
     fontSize: FONT.sm,
-    color: '#777',
+    color: COLORS.textSecondary,
     textAlign: 'center',
-    marginTop: hp(1),
-    marginBottom: hp(2.75),
-  },
-
-  label: {
-    fontSize: FONT.xs,
-    color: '#555',
-    marginBottom: hp(0.75),
-  },
-
-  inputBox: {
-    borderWidth: 1.5,
-    borderColor: '#D9E0F2',
-    backgroundColor: '#F2F2F2',
-    borderRadius: scale(12),
-    paddingHorizontal: wp(3.89),
-    height: hp(6.25),
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginBottom: hp(1.75),
-  },
-  inputBoxFocused: {
-    borderColor: '#000000',
-    backgroundColor: '#F9F9F9',
-  },
-
-  input: {
-    flex: 1,
-    fontSize: FONT.sm,
-    color: '#000',
-  },
-
-  eyeBtn: {
-    paddingLeft: wp(2.78),
-    paddingVertical: hp(0.75),
-  },
-
-  eyeIcon: {
-    width: wp(5),
-    height: hp(2.25),
-    tintColor: '#9AA0A6',
-  },
-
-  forgot: {
-    fontSize: FONT.xs,
-    color: '#666',
-    textAlign: 'right',
+    marginTop: hp(0.5),
     marginBottom: hp(2.5),
   },
-
-  btn: {
-    backgroundColor: '#ed1c24',
-    borderRadius: scale(16),
-    paddingVertical: hp(2.25),
-    alignItems: 'center',
+  forgot: {
+    fontSize: FONT.xs,
+    color: COLORS.accent,
+    textAlign: 'right',
+    marginBottom: hp(2),
+    fontWeight: '600',
   },
-
+  btn: {
+    backgroundColor: COLORS.primary,
+    borderRadius: scale(14),
+    paddingVertical: hp(2),
+    alignItems: 'center',
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4,
+  },
   btnDisabled: {
     opacity: 0.7,
   },
-
   btnText: {
-    color: '#FFF',
+    color: '#FFFFFF',
     fontSize: FONT.md,
-    fontWeight: '600',
+    fontWeight: '700',
   },
-
   orRow: {
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: hp(2),
     columnGap: wp(3.33),
   },
-
   orLine: {
     flex: 1,
     height: hp(0.125),
-    backgroundColor: '#E9ECF3',
+    backgroundColor: COLORS.border,
   },
-
   orText: {
-    color: '#999',
+    color: COLORS.textMuted,
     fontSize: FONT.xs,
   },
-
   googleBtn: {
     borderWidth: 1,
-    borderColor: '#E3E7F0',
-    backgroundColor: '#FFF',
+    borderColor: COLORS.border,
+    backgroundColor: '#FFFFFF',
     borderRadius: scale(12),
     paddingVertical: hp(1.75),
     alignItems: 'center',
@@ -383,32 +330,29 @@ const styles = StyleSheet.create({
     columnGap: wp(2.78),
     marginBottom: hp(1.5),
   },
-
   googleIcon: {
     width: wp(5),
     height: hp(2.25),
   },
-
   googleText: {
     fontSize: FONT.sm,
-    color: '#333',
+    color: COLORS.textDark,
+    fontWeight: '500',
   },
-
   footer: {
     textAlign: 'center',
     marginTop: hp(1.25),
     fontSize: FONT.xs,
-    color: '#666',
+    color: COLORS.textSecondary,
     marginBottom: hp(2.5),
   },
-
   register: {
-    color: '#ed1c24',
-    fontWeight: '600',
+    color: COLORS.primary,
+    fontWeight: '700',
   },
   errorText: {
     fontSize: FONT.xs,
-    color: '#ed1c24',
+    color: COLORS.error,
     marginTop: hp(-0.75),
     marginBottom: hp(1.25),
   },

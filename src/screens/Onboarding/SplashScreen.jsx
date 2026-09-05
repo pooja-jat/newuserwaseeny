@@ -3,15 +3,14 @@ import { View, Image, StyleSheet, Dimensions, StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
-import LogoIcon from '../../assets/icons/LogoIcon.svg';
 import { useAuth } from '../../context/AuthContext';
+import { COLORS } from '../../theme/colors';
 
 const { width, height } = Dimensions.get('window');
 
 const SplashScreen = () => {
   const navigation = useNavigation();
   const { isInitialized, isAuthenticated } = useAuth();
-
 
   useEffect(() => {
     if (!isInitialized) return;
@@ -25,16 +24,16 @@ const SplashScreen = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
+      <StatusBar backgroundColor={COLORS.background} barStyle="dark-content" />
 
       {/* LOGO */}
-      <LogoIcon
-        width={width * 0.72}
-        height={width * 0.32}
+      <Image
+        source={require('../../assets/images/ECDKART_Logo.png')}
         style={styles.logo}
+        resizeMode="contain"
       />
 
-      {/* RED CURVE (SVG) */}
+      {/* PRIMARY GREEN CURVE (SVG) */}
       <View style={styles.svgContainer}>
         <Svg
           width={width}
@@ -50,12 +49,11 @@ const SplashScreen = () => {
               L 0 300
               Z
             "
-            fill="#ed1c24"
+            fill={COLORS.primary}
           />
         </Svg>
       </View>
 
-     
       <Image
         source={require('../../assets/images/Noodle.png')}
         style={styles.noodle}
@@ -70,14 +68,14 @@ export default SplashScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.background,
     alignItems: 'center',
   },
 
   logo: {
-    width: width * 0.72,
-    height: width * 0.32,
-    marginTop: height * 0.18,
+    width: width * 0.75,
+    height: width * 0.4,
+    marginTop: height * 0.12,
     zIndex: 10,
   },
 
@@ -97,3 +95,4 @@ const styles = StyleSheet.create({
     zIndex: 5,
   },
 });
+

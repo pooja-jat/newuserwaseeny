@@ -1,10 +1,15 @@
 [
   {
     "_id": "ord_101",
-    "orderId": "ORD-20260904-4521",
-    "status": "delivered",
-    "createdAt": "2026-09-04T12:00:00.000Z",
-    "totalAmount": 498,
+    "orderNumber": "ECD-2026-8921",
+    "status": "DELIVERED",
+    "createdAt": "2026-09-04T19:30:00.000Z",
+    "restaurant": {
+      "id": "r1",
+      "name": "The Food Haven",
+      "logo": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500",
+      "address": "124 Food Street, City Center"
+    },
     "items": [
       {
         "name": "Crispy Cheese Burger",
@@ -12,44 +17,65 @@
         "price": 199
       },
       {
-        "name": "French Fries Basket",
+        "name": "Loaded French Fries Basket",
         "quantity": 1,
-        "price": 99
+        "price": 129
       }
     ],
-    "restaurant": {
-      "_id": "r1",
-      "name": "The Food Haven",
-      "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500"
-    },
-    "deliveryAddress": {
-      "label": "Home",
-      "street": "123 Main Street",
-      "city": "City Center"
-    }
+    "totalAmount": 527,
+    "deliveryFee": 0,
+    "discount": 50,
+    "paymentMethod": "UPI (Google Pay)"
   },
   {
     "_id": "ord_102",
-    "orderId": "ORD-20260903-8832",
-    "status": "completed",
-    "createdAt": "2026-09-03T18:30:00.000Z",
-    "totalAmount": 299,
+    "orderNumber": "ECD-2026-8940",
+    "status": "PREPARING",
+    "createdAt": "2026-09-05T09:45:00.000Z",
+    "restaurant": {
+      "id": "r3",
+      "name": "Royal Biryani House",
+      "logo": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500",
+      "address": "78 Old Fort Lane, Heritage Market"
+    },
     "items": [
       {
-        "name": "Margherita Pizza",
+        "name": "Hyderabadi Chicken Dum Biryani",
         "quantity": 1,
-        "price": 299
+        "price": 320
       }
     ],
+    "totalAmount": 350,
+    "deliveryFee": 30,
+    "discount": 0,
+    "paymentMethod": "Cash on Delivery"
+  },
+  {
+    "_id": "ord_103",
+    "orderNumber": "ECD-2026-7812",
+    "status": "DELIVERED",
+    "createdAt": "2026-09-02T14:15:00.000Z",
     "restaurant": {
-      "_id": "r1",
-      "name": "The Food Haven",
-      "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500"
+      "id": "r6",
+      "name": "Sweet Tooth Desserts",
+      "logo": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=500",
+      "address": "14 Baker Street, Central Plaza"
     },
-    "deliveryAddress": {
-      "label": "Home",
-      "street": "123 Main Street",
-      "city": "City Center"
-    }
+    "items": [
+      {
+        "name": "Warm Molten Lava Cake",
+        "quantity": 2,
+        "price": 140
+      },
+      {
+        "name": "New York Cheesecake Slice",
+        "quantity": 1,
+        "price": 190
+      }
+    ],
+    "totalAmount": 470,
+    "deliveryFee": 0,
+    "discount": 40,
+    "paymentMethod": "Credit Card"
   }
 ]

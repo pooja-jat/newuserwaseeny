@@ -16,32 +16,32 @@
     },
     "menu": [
       {
-        "_id": "cat1",
+        "_id": "cat1_r1",
         "name": "Recommended",
         "items": [
           {
-            "_id": "m1",
+            "_id": "m1_r1",
             "name": "Crispy Cheese Burger",
             "price": 199,
-            "description": "Fresh patty with melted cheddar and special sauce",
+            "description": "Fresh patty with melted cheddar, crisp lettuce and ECD special sauce",
             "image": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400",
             "rating": 4.8,
             "isVeg": false
           },
           {
-            "_id": "m2",
-            "name": "Margherita Pizza",
+            "_id": "m2_r1",
+            "name": "Farmhouse Margherita Pizza",
             "price": 299,
-            "description": "Classic mozzarella, basil, and tomato sauce pizza",
+            "description": "Classic mozzarella, fresh basil, bell peppers and organic tomato sauce",
             "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400",
             "rating": 4.9,
             "isVeg": true
           },
           {
-            "_id": "m3",
-            "name": "French Fries Basket",
-            "price": 99,
-            "description": "Crispy golden fries with herb seasoning",
+            "_id": "m3_r1",
+            "name": "Loaded French Fries Basket",
+            "price": 129,
+            "description": "Crispy golden peri-peri fries with herb seasoning and cheese dip",
             "image": "https://images.unsplash.com/photo-1576107232684-1279f3908594?w=400",
             "rating": 4.6,
             "isVeg": true
@@ -49,16 +49,226 @@
         ]
       },
       {
-        "_id": "cat2",
-        "name": "Beverages",
+        "_id": "cat2_r1",
+        "name": "Beverages & Shakes",
         "items": [
           {
-            "_id": "m4",
-            "name": "Iced Lemon Tea",
-            "price": 79,
-            "description": "Refreshing chilled lemon tea",
+            "_id": "m4_r1",
+            "name": "Iced Lemon Mint Tea",
+            "price": 89,
+            "description": "Refreshing chilled lemon tea with fresh mint leaves",
             "image": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400",
             "rating": 4.7,
+            "isVeg": true
+          },
+          {
+            "_id": "m5_r1",
+            "name": "Belgian Chocolate Shake",
+            "price": 149,
+            "description": "Rich and thick Belgian chocolate milkshake topped with choco chips",
+            "image": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400",
+            "rating": 4.9,
+            "isVeg": true
+          }
+        ]
+      }
+    ]
+  },
+  "r2": {
+    "restaurant": {
+      "_id": "r2",
+      "id": "r2",
+      "name": "Burger Club",
+      "logo": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=500",
+      "coverImage": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=500",
+      "rating": 4.5,
+      "ratingCount": 180,
+      "cuisines": ["Burgers", "Fast Food", "Sides"],
+      "deliveryTime": "20-25 min",
+      "distance": "1.5 km",
+      "priceForTwo": 300,
+      "address": "45 Mall Road, Sector 18"
+    },
+    "menu": [
+      {
+        "_id": "cat1_r2",
+        "name": "Signature Burgers",
+        "items": [
+          {
+            "_id": "m1_r2",
+            "name": "Double Smash Bacon Burger",
+            "price": 249,
+            "description": "Two smashed beef patties, crispy bacon strips and smoky BBQ sauce",
+            "image": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400",
+            "rating": 4.8,
+            "isVeg": false
+          },
+          {
+            "_id": "m2_r2",
+            "name": "Paneer Tikka Crunch Burger",
+            "price": 189,
+            "description": "Spicy grilled paneer patty with mint mayo and crunchy onions",
+            "image": "https://images.unsplash.com/photo-1550547660-d9450f859349?w=400",
+            "rating": 4.6,
+            "isVeg": true
+          }
+        ]
+      }
+    ]
+  },
+  "r3": {
+    "restaurant": {
+      "_id": "r3",
+      "id": "r3",
+      "name": "Royal Biryani House",
+      "logo": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500",
+      "coverImage": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500",
+      "rating": 4.9,
+      "ratingCount": 420,
+      "cuisines": ["Biryani", "Mughlai", "Kebabs"],
+      "deliveryTime": "30-35 min",
+      "distance": "3.2 km",
+      "priceForTwo": 550,
+      "address": "78 Old Fort Lane, Heritage Market"
+    },
+    "menu": [
+      {
+        "_id": "cat1_r3",
+        "name": "Dum Biryani",
+        "items": [
+          {
+            "_id": "m1_r3",
+            "name": "Hyderabadi Chicken Dum Biryani",
+            "price": 320,
+            "description": "Authentic long grain basmati rice cooked on slow flame with aromatic spices and tender chicken",
+            "image": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400",
+            "rating": 4.9,
+            "isVeg": false
+          },
+          {
+            "_id": "m2_r3",
+            "name": "Shahi Paneer Dum Biryani",
+            "price": 270,
+            "description": "Fresh paneer cubes layered with saffron spiced basmati rice and roasted cashews",
+            "image": "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=400",
+            "rating": 4.7,
+            "isVeg": true
+          }
+        ]
+      }
+    ]
+  },
+  "r4": {
+    "restaurant": {
+      "_id": "r4",
+      "id": "r4",
+      "name": "Green Bowl Salads",
+      "logo": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=500",
+      "coverImage": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=500",
+      "rating": 4.6,
+      "ratingCount": 95,
+      "cuisines": ["Healthy", "Salads", "Smoothies"],
+      "deliveryTime": "15-20 min",
+      "distance": "1.2 km",
+      "priceForTwo": 350,
+      "address": "12 Eco Green Park, Phase 1"
+    },
+    "menu": [
+      {
+        "_id": "cat1_r4",
+        "name": "Signature Bowls",
+        "items": [
+          {
+            "_id": "m1_r4",
+            "name": "Mediterranean Quinoa Bowl",
+            "price": 220,
+            "description": "Organic quinoa, olives, feta cheese, cherry tomatoes and olive oil dressing",
+            "image": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400",
+            "rating": 4.8,
+            "isVeg": true
+          }
+        ]
+      }
+    ]
+  },
+  "r5": {
+    "restaurant": {
+      "_id": "r5",
+      "id": "r5",
+      "name": "Dragon Wok Chinese",
+      "logo": "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?w=500",
+      "coverImage": "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?w=500",
+      "rating": 4.7,
+      "ratingCount": 310,
+      "cuisines": ["Chinese", "Noodles", "Dimsum"],
+      "deliveryTime": "20-25 min",
+      "distance": "2.4 km",
+      "priceForTwo": 400,
+      "address": "88 Chinatown Arcade"
+    },
+    "menu": [
+      {
+        "_id": "cat1_r5",
+        "name": "Wok Specialties",
+        "items": [
+          {
+            "_id": "m1_r5",
+            "name": "Hakka Noodles with Manchurian",
+            "price": 210,
+            "description": "Wok tossed noodles served with flavorful vegetable manchurian gravy",
+            "image": "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?w=400",
+            "rating": 4.7,
+            "isVeg": true
+          },
+          {
+            "_id": "m2_r5",
+            "name": "Steamed Chicken Dimsums (6 pcs)",
+            "price": 180,
+            "description": "Juicy chicken dumplings served with spicy chili garlic dip",
+            "image": "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=400",
+            "rating": 4.9,
+            "isVeg": false
+          }
+        ]
+      }
+    ]
+  },
+  "r6": {
+    "restaurant": {
+      "_id": "r6",
+      "id": "r6",
+      "name": "Sweet Tooth Desserts",
+      "logo": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=500",
+      "coverImage": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=500",
+      "rating": 4.9,
+      "ratingCount": 560,
+      "cuisines": ["Desserts", "Bakery", "Ice Cream"],
+      "deliveryTime": "15-20 min",
+      "distance": "1.0 km",
+      "priceForTwo": 250,
+      "address": "14 Baker Street, Central Plaza"
+    },
+    "menu": [
+      {
+        "_id": "cat1_r6",
+        "name": "Desserts & Cakes",
+        "items": [
+          {
+            "_id": "m1_r6",
+            "name": "Warm Molten Lava Cake",
+            "price": 140,
+            "description": "Warm chocolate cake with gooey center served with vanilla scoop",
+            "image": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400",
+            "rating": 4.9,
+            "isVeg": true
+          },
+          {
+            "_id": "m2_r6",
+            "name": "New York Cheesecake Slice",
+            "price": 190,
+            "description": "Creamy dense cheesecake with berry compote drizzle",
+            "image": "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=400",
+            "rating": 4.8,
             "isVeg": true
           }
         ]

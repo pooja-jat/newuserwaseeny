@@ -17,6 +17,7 @@ import {
 import { hp, wp } from '../../utils/responsive';
 import { scale } from '../../utils/scale';
 import { FONT_SIZES as FONT } from '../../theme/typography';
+import { COLORS } from '../../theme/colors';
 
 export const HomeHeader = memo(({
   addressLabel,
@@ -50,7 +51,7 @@ export const HomeHeader = memo(({
             <View style={styles.addressBlock}>
               <Text style={styles.homeLabel}>{addressLabel}</Text>
               <View style={styles.locationRow}>
-                <MapPin size={16} color="#111111" />
+                <MapPin size={16} color={COLORS.primary} />
                 <Text style={styles.location} numberOfLines={1}>
                   {addressLine}
                 </Text>
@@ -107,10 +108,10 @@ export const HomeHeader = memo(({
           activeOpacity={0.9}
           onPress={onSearchPress}
         >
-          <Search size={18} color="#9E9E9E" />
+          <Search size={18} color={COLORS.secondaryGreen} />
           <TextInput
             placeholder="Search Dish name..."
-            placeholderTextColor="#9E9E9E"
+            placeholderTextColor={COLORS.textMuted}
             style={styles.searchInput}
             editable={false}
           />
@@ -182,10 +183,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: scale(2),
-    borderColor: '#ed1c24',
+    borderColor: COLORS.primary,
   },
   cartBadgeText: {
-    color: '#ed1c24',
+    color: COLORS.primary,
     fontSize: FONT.xs + scale(-2),
     fontWeight: '800',
     includeFontPadding: false,
@@ -210,7 +211,7 @@ const styles = StyleSheet.create({
   },
   homeLabel: {
     fontSize: FONT.xs + scale(-1),
-    color: '#8E8E93',
+    color: COLORS.textMuted,
     lineHeight: scale(14),
     includeFontPadding: false,
     marginBottom: hp(0.25),
@@ -224,7 +225,7 @@ const styles = StyleSheet.create({
     fontSize: FONT.sm + scale(1),
     fontWeight: '600',
     marginTop: 0,
-    color: '#111111',
+    color: COLORS.textDark,
     lineHeight: scale(18),
     includeFontPadding: false,
     flexShrink: 1,
@@ -239,7 +240,7 @@ const styles = StyleSheet.create({
     height: wp(11.11),
     borderRadius: scale(56),
     borderWidth: scale(2),
-    borderColor: '#ed1c24',
+    borderColor: COLORS.primary,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFFFFF',
@@ -254,7 +255,7 @@ const styles = StyleSheet.create({
     width: wp(11.11),
     height: wp(11.11),
     borderRadius: scale(56),
-    backgroundColor: '#ed1c24',
+    backgroundColor: COLORS.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -262,9 +263,9 @@ const styles = StyleSheet.create({
     marginTop: hp(1.75),
     height: hp(6.5),
     borderRadius: scale(26),
-    backgroundColor: 'rgba(255,255,255,0.92)',
+    backgroundColor: 'rgba(255,255,255,0.95)',
     borderWidth: scale(1),
-    borderColor: 'rgba(0,0,0,0.12)',
+    borderColor: COLORS.border,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: wp(4.44),
@@ -277,7 +278,7 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: FONT.sm,
-    color: '#111111',
+    color: COLORS.textDark,
     paddingVertical: 0,
   },
   tabs: {
@@ -300,13 +301,13 @@ const styles = StyleSheet.create({
   },
   tabText: {
     fontSize: FONT.sm + scale(2),
-    color: '#111111',
+    color: COLORS.textSecondary,
     fontWeight: '700',
     opacity: 0.65,
   },
   tabTextActive: {
     fontSize: FONT.sm + scale(2),
-    color: '#111111',
+    color: COLORS.primary,
     fontWeight: '700',
     opacity: 1,
   },
@@ -318,7 +319,9 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    height: hp(0.25),
-    backgroundColor: '#ed1c24',
+    height: hp(0.35),
+    backgroundColor: COLORS.accent,
+    borderRadius: scale(2),
   },
 });
+

@@ -16,6 +16,7 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { wp, hp } from '../../utils/responsive';
 import { scale } from '../../utils/scale';
 import { FONT_SIZES as FONT } from '../../theme/typography';
+import { COLORS } from '../../theme/colors';
 
 const HORIZONTAL_PADDING = wp(4.44);
 const GAP = wp(3.33);
@@ -212,7 +213,7 @@ const styles = StyleSheet.create({
   activeBorder: {
     ...StyleSheet.absoluteFillObject,
     borderWidth: scale(2.5),
-    borderColor: '#ed1c24',
+    borderColor: COLORS.primary,
     borderRadius: scale(16),
   },
 
@@ -221,10 +222,15 @@ const styles = StyleSheet.create({
     left: HORIZONTAL_PADDING,
     right: HORIZONTAL_PADDING,
     height: BUTTON_HEIGHT,
-    backgroundColor: '#FF2D2D',
+    backgroundColor: COLORS.primary,
     borderRadius: scale(27),
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4,
   },
 
   buttonText: {
@@ -233,3 +239,4 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 });
+

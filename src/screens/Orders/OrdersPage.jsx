@@ -22,6 +22,8 @@ import { wp, hp } from '../../utils/responsive';
 import { scale } from '../../utils/scale';
 import { FONT_SIZES } from '../../theme/typography';
 import { SPACING } from '../../theme/spacing';
+import { COLORS } from '../../theme/colors';
+
 
 const FALLBACK_ITEM_IMAGE = require('../../assets/images/Noodle.png');
 
@@ -361,13 +363,13 @@ const styles = StyleSheet.create({
   },
 
   tabActive: {
-    backgroundColor: '#ed1c24',
+    backgroundColor: COLORS.primary,
   },
 
   tabText: {
     fontSize: FONT_SIZES.xs,
-    color: '#000000',
-    fontWeight: '500',
+    color: COLORS.textDark,
+    fontWeight: '600',
   },
 
   tabTextActive: {
@@ -384,26 +386,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
     borderRadius: scale(20),
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: COLORS.border,
   },
 
   filterChipActive: {
-    backgroundColor: '#ed1c24',
-    borderColor: '#ed1c24',
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
   },
 
   filterChipText: {
     fontSize: FONT_SIZES.xs,
     fontWeight: '500',
-    color: '#666666',
+    color: COLORS.textSecondary,
   },
 
   filterChipTextActive: {
     color: '#FFFFFF',
-    fontWeight: '600',
+    fontWeight: '700',
   },
+
 
   card: {
     borderWidth: 1,

@@ -35,6 +35,8 @@ import { FoodCategoryList } from '../../components/Home/FoodCategoryList';
 import { PromoCardList } from '../../components/Home/PromoCardList';
 import { RestaurantListCard, RestaurantRecommendCard } from '../../components/Home/RestaurantCard';
 import { SkeletonCard, SkeletonRecommendCard } from '../../components/Home/SkeletonLoaders';
+import { COLORS } from '../../theme/colors';
+
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -757,11 +759,11 @@ export default function HomeScreen() {
                       paddingVertical: hp(1.5),
                     }}
                   >
-                    <ActivityIndicator size="small" color="#ed1c24" />
+                    <ActivityIndicator size="small" color={COLORS.primary} />
                     <Text
                       style={{
                         marginTop: hp(1),
-                        color: '#8E8E93',
+                        color: COLORS.textMuted,
                         fontSize: FONT.xs,
                       }}
                     >
@@ -786,11 +788,11 @@ export default function HomeScreen() {
                       paddingVertical: hp(1.5),
                     }}
                   >
-                    <ActivityIndicator size="small" color="#ed1c24" />
+                    <ActivityIndicator size="small" color={COLORS.primary} />
                     <Text
                       style={{
                         marginTop: hp(1),
-                        color: '#8E8E93',
+                        color: COLORS.textMuted,
                         fontSize: FONT.xs,
                       }}
                     >
@@ -826,7 +828,7 @@ export default function HomeScreen() {
                 >
                   <Text
                     style={{
-                      color: '#8E8E93',
+                      color: COLORS.textMuted,
                       fontSize: FONT.sm,
                       marginBottom: hp(1.5),
                     }}
@@ -837,7 +839,7 @@ export default function HomeScreen() {
                     style={{
                       paddingHorizontal: wp(5.56),
                       paddingVertical: hp(1.25),
-                      backgroundColor: '#ed1c24',
+                      backgroundColor: COLORS.primary,
                       borderRadius: scale(8),
                       opacity: isRefreshing ? 0.6 : 1,
                     }}
@@ -868,13 +870,13 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: '#ed1c24',
+    backgroundColor: COLORS.primary,
     overflow: 'hidden',
     
   },
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.background,
   },
   sectionHeader: {
     marginTop: hp(3.75),
@@ -884,23 +886,24 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: FONT.md + scale(2),
-    fontWeight: '600',
+    fontWeight: '700',
+    color: COLORS.textDark,
   },
   sortText: {
     fontSize: FONT.md,
-    color: '#ed1c24',
+    color: COLORS.primary,
     gap: 4,
   },
   allItemsButton: {
     paddingHorizontal: wp(2.5),
     paddingVertical: hp(0.5),
     borderRadius: scale(10),
-    backgroundColor: '#FFF5F5',
+    backgroundColor: COLORS.primaryLight,
     alignSelf: 'center',
   },
   allItemsText: {
     fontSize: FONT.xs,
-    color: '#ed1c24',
+    color: COLORS.primary,
     fontWeight: '600',
   },
   sortActions: {
@@ -914,3 +917,4 @@ const styles = StyleSheet.create({
     paddingBottom: hp(2),
   },
 });
+

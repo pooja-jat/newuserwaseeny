@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import LogoIcon from '../assets/icons/LogoIcon.svg';
+import { COLORS } from '../theme/colors';
 
 const FirstNextScreen = () => {
   const navigation = useNavigation();
@@ -10,7 +10,11 @@ const FirstNextScreen = () => {
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.container}>
-        <LogoIcon width={260} height={260} style={styles.logo} />
+        <Image
+          source={require('../assets/images/ECDKART_Logo.png')}
+          style={styles.logo}
+          resizeMode="contain"
+        />
 
         <TouchableOpacity
           style={styles.button}
@@ -26,37 +30,43 @@ const FirstNextScreen = () => {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.background,
   },
 
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.background,
     justifyContent: 'center',
     alignItems: 'center',
   },
 
   logo: {
-    width: 260,
-    height: 260,
+    width: 280,
+    height: 280,
   },
 
   button: {
     position: 'absolute',
     bottom: 30,
     width: '90%',
-    height: 50,
-    backgroundColor: '#E41E26',
-    borderRadius: 12,
+    height: 52,
+    backgroundColor: COLORS.primary,
+    borderRadius: 14,
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4,
   },
 
   buttonText: {
     color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '700',
   },
 });
 
 export default FirstNextScreen;
+

@@ -22,6 +22,8 @@ import { wp, hp } from '../utils/responsive';
 import { scale } from '../utils/scale';
 import { FONT_SIZES } from '../theme/typography';
 import { SPACING } from '../theme/spacing';
+import { COLORS } from '../theme/colors';
+
 
 function groupByRestaurant(cart) {
   const items = Array.isArray(cart) ? cart : [];
@@ -843,38 +845,36 @@ const styles = StyleSheet.create({
     gap: scale(10),
   },
   couponTitle: { fontSize: FONT_SIZES.xs, fontWeight: '700', color: '#111' },
-  couponCodeWrap: {
-    marginTop: scale(6),
-    alignSelf: 'flex-start',
+  couponPill: {
     borderWidth: 1,
-    borderColor: '#E53935',
+    borderColor: COLORS.primary,
     borderStyle: 'dashed',
     borderRadius: scale(6),
     paddingHorizontal: scale(10),
     paddingVertical: scale(4),
   },
   couponCode: {
-    color: '#E53935',
+    color: COLORS.primary,
     fontWeight: '900',
     fontSize: FONT_SIZES.xs,
   },
   couponApply: {
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: COLORS.border,
     borderRadius: scale(8),
     paddingHorizontal: SPACING.md,
     paddingVertical: scale(6),
   },
-  couponApplyText: { fontWeight: '800', fontSize: FONT_SIZES.xs, color: '#111' },
+  couponApplyText: { fontWeight: '800', fontSize: FONT_SIZES.xs, color: COLORS.textDark },
   couponApplied: {
     borderWidth: 1,
-    borderColor: '#E53935',
+    borderColor: COLORS.primary,
     borderRadius: scale(8),
     paddingHorizontal: SPACING.md,
     paddingVertical: scale(6),
-    backgroundColor: '#FFECEC',
+    backgroundColor: COLORS.primaryLight,
   },
-  couponAppliedText: { fontWeight: '800', fontSize: FONT_SIZES.xs, color: '#E53935' },
+  couponAppliedText: { fontWeight: '800', fontSize: FONT_SIZES.xs, color: COLORS.primary },
 
   viewCoupons: {
     marginTop: scale(10),
@@ -885,10 +885,10 @@ const styles = StyleSheet.create({
     borderRadius: SPACING.md,
     padding: SPACING.md,
     borderWidth: 1,
-    borderColor: '#F0F0F0',
+    borderColor: COLORS.border,
   },
-  viewCouponsText: { fontWeight: '800', color: '#111' },
-  viewCouponsArrow: { fontSize: FONT_SIZES.md, color: '#777' },
+  viewCouponsText: { fontWeight: '800', color: COLORS.textDark },
+  viewCouponsArrow: { fontSize: FONT_SIZES.md, color: COLORS.textMuted },
 
   billBox: {
     marginTop: SPACING.md,
@@ -896,11 +896,10 @@ const styles = StyleSheet.create({
     borderRadius: SPACING.md,
     padding: SPACING.md,
     borderWidth: 1,
-    borderColor: '#F0F0F0',
+    borderColor: COLORS.border,
   },
-  billTitle: { fontWeight: '900', color: '#111', marginBottom: SPACING.sm },
+  billTitle: { fontWeight: '900', color: COLORS.textDark, marginBottom: SPACING.sm },
   
-  // Bill item breakdown styles
   billItemSection: {
     marginBottom: scale(12),
     paddingBottom: scale(8),
@@ -913,7 +912,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: scale(8),
     paddingHorizontal: scale(8),
-    backgroundColor: '#F9F9F9',
+    backgroundColor: COLORS.background,
     borderRadius: scale(8),
     marginBottom: scale(6),
   },
@@ -926,7 +925,7 @@ const styles = StyleSheet.create({
   billItemName: {
     fontSize: FONT_SIZES.xs,
     fontWeight: '800',
-    color: '#111',
+    color: COLORS.textDark,
   },
   billItemDetails: {
     paddingLeft: scale(8),
@@ -940,19 +939,19 @@ const styles = StyleSheet.create({
   },
   billSubLabel: {
     fontSize: FONT_SIZES.xs - 1,
-    color: '#666',
+    color: COLORS.textSecondary,
     fontWeight: '600',
     flex: 1,
   },
   billSubValue: {
     fontSize: FONT_SIZES.xs - 1,
-    color: '#777',
+    color: COLORS.textMuted,
     fontWeight: '700',
   },
   billItemTotal: {
     fontSize: FONT_SIZES.xs,
     fontWeight: '900',
-    color: '#111',
+    color: COLORS.textDark,
   },
 
   billRow: {
@@ -963,17 +962,17 @@ const styles = StyleSheet.create({
     padding: scale(4),
     borderColor: '#D9D9D9',
   },
-  billLabel: { color: '#777', fontWeight: '700' },
-  billValue: { color: '#111', fontWeight: '900' },
-  billFree: { color: '#E53935', fontWeight: '900' },
-  billDiscount: { color: '#E53935', fontWeight: '900' },
+  billLabel: { color: COLORS.textSecondary, fontWeight: '700' },
+  billValue: { color: COLORS.textDark, fontWeight: '900' },
+  billFree: { color: COLORS.primary, fontWeight: '900' },
+  billDiscount: { color: COLORS.primary, fontWeight: '900' },
   billDivider: { height: 1, backgroundColor: '#EEE', marginVertical: SPACING.sm },
-  billTotal: { color: '#111', fontWeight: '900', fontSize: FONT_SIZES.xs },
+  billTotal: { color: COLORS.textDark, fontWeight: '900', fontSize: FONT_SIZES.xs },
 
   popularBox: {
     marginTop: SPACING.md,
   },
-  popularTitle: { fontWeight: '900', color: '#111', marginBottom: SPACING.sm },
+  popularTitle: { fontWeight: '900', color: COLORS.textDark, marginBottom: SPACING.sm },
   popularList: { paddingRight: scale(6) },
   popularCard: {
     width: wp(32),
@@ -982,27 +981,27 @@ const styles = StyleSheet.create({
     borderRadius: SPACING.md,
     padding: SPACING.sm,
     borderWidth: 1,
-    borderColor: '#F0F0F0',
+    borderColor: COLORS.border,
   },
   popularImg: { width: '100%', height: scale(70), borderRadius: scale(10) },
-  popularName: { marginTop: scale(6), fontWeight: '800', color: '#111', fontSize: FONT_SIZES.xs },
-  popularSub: { fontSize: FONT_SIZES.xs, color: '#777', marginTop: scale(2) },
+  popularName: { marginTop: scale(6), fontWeight: '800', color: COLORS.textDark, fontSize: FONT_SIZES.xs },
+  popularSub: { fontSize: FONT_SIZES.xs, color: COLORS.textMuted, marginTop: scale(2) },
   popularPrice: {
     marginTop: scale(4),
-    color: '#111',
+    color: COLORS.textDark,
     fontWeight: '900',
     fontSize: FONT_SIZES.xs,
   },
   popularAdd: {
     marginTop: scale(6),
     borderWidth: 1,
-    borderColor: '#E53935',
+    borderColor: COLORS.primary,
     borderRadius: scale(10),
     height: scale(28),
     alignItems: 'center',
     justifyContent: 'center',
   },
-  popularAddText: { color: '#E53935', fontWeight: '900', fontSize: FONT_SIZES.xs },
+  popularAddText: { color: COLORS.primary, fontWeight: '900', fontSize: FONT_SIZES.xs },
 
   bottomBarCompact: {
     position: 'absolute',
@@ -1011,22 +1010,32 @@ const styles = StyleSheet.create({
     bottom: 0,
     backgroundColor: '#FFF',
     borderTopWidth: 1,
-    borderColor: '#EEE',
+    borderColor: COLORS.border,
     paddingHorizontal: SPACING.lg,
     paddingVertical: SPACING.md,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowRadius: scale(6),
+    shadowOffset: { width: 0, height: -3 },
   },
-  bottomTotal: { fontSize: FONT_SIZES.sm, fontWeight: '900', color: '#111' },
-  bottomSub: { fontSize: FONT_SIZES.xs, color: '#777', fontWeight: '700' },
+  bottomTotal: { fontSize: FONT_SIZES.sm, fontWeight: '900', color: COLORS.textDark },
+  bottomSub: { fontSize: FONT_SIZES.xs, color: COLORS.textMuted, fontWeight: '700' },
   reviewBtn: {
-    backgroundColor: '#FF3D3D',
+    backgroundColor: COLORS.primary,
     borderRadius: scale(14),
     paddingHorizontal: SPACING.lg,
-    height: scale(40),
+    height: scale(42),
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    elevation: 3,
   },
   reviewBtnText: { color: '#FFF', fontWeight: '900', fontSize: FONT_SIZES.xs },
 });

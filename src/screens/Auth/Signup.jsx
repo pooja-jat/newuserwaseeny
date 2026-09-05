@@ -20,8 +20,10 @@ import { useAuth } from '../../context/AuthContext';
 import { wp, hp } from '../../utils/responsive';
 import { scale } from '../../utils/scale';
 import { FONT_SIZES as FONT } from '../../theme/typography';
+import { COLORS } from '../../theme/colors';
 
 export default function CreateAccountScreen() {
+
   const navigation = useNavigation();
   const { setAuthenticatedUser } = useAuth();
   const [firstName, setFirstName] = useState('');
@@ -250,8 +252,14 @@ export default function CreateAccountScreen() {
 
           <View style={styles.headerOverlay} />
           <View style={styles.headerBottomFade} />
-          
+
+          <Image
+            source={require('../../assets/images/ECDKART_Logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
         </View>
+
 
         
         <ScrollView
@@ -380,11 +388,10 @@ const styles = StyleSheet.create({
 
   header: {
     width: '100%',
-    height: hp(66),
-    overflow: 'hidden',
-    borderBottomLeftRadius: scale(34),
-    borderBottomRightRadius: scale(34),
-    position: 'absolute',
+    height: hp(24),
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
   },
 
   topImage: {
@@ -397,7 +404,7 @@ const styles = StyleSheet.create({
 
   headerOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(255,255,255,0.55)',
+    backgroundColor: 'rgba(255,255,255,0.65)',
   },
 
   headerBottomFade: {
@@ -406,21 +413,21 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     height: hp(8.75),
-    backgroundColor: 'rgba(255,255,255,0.72)',
+    backgroundColor: 'rgba(245,250,248,0.85)',
   },
 
   logo: {
     alignSelf: 'center',
-    width: wp(50),
-    height: hp(11.25),
-    marginTop: hp(6.25),
+    width: wp(60),
+    height: hp(13),
+    marginTop: hp(3),
   },
 
   /* CONTENT */
   content: {
     paddingHorizontal: wp(6.67),
-    paddingTop: hp(11.25),
-    paddingBottom: hp(3),
+    paddingTop: hp(2),
+    paddingBottom: hp(4),
     zIndex: 1,
   },
 
@@ -428,27 +435,27 @@ const styles = StyleSheet.create({
     fontSize: FONT.xxl,
     fontWeight: '700',
     textAlign: 'center',
-    color: '#111',
+    color: COLORS.textDark,
   },
 
   subtitle: {
     fontSize: FONT.sm,
-    color: '#777',
+    color: COLORS.textSecondary,
     textAlign: 'center',
-    marginTop: hp(1),
-    marginBottom: hp(2.75),
+    marginTop: hp(0.5),
+    marginBottom: hp(2.5),
   },
 
   label: {
     fontSize: FONT.xs,
-    color: '#555',
+    color: COLORS.textSecondary,
     marginBottom: hp(0.75),
   },
 
   inputBox: {
     borderWidth: 1,
-    borderColor: '#D9E0F2',
-    backgroundColor: '#F2F2F2',
+    borderColor: COLORS.border,
+    backgroundColor: '#FFFFFF',
     borderRadius: scale(12),
     paddingHorizontal: wp(3.89),
     height: hp(5),
@@ -458,14 +465,14 @@ const styles = StyleSheet.create({
   },
 
   inputBoxFocused: {
-    borderColor: '#000000',
+    borderColor: COLORS.primary,
     backgroundColor: '#FFFFFF',
   },
 
   input: {
     flex: 1,
     fontSize: FONT.sm,
-    color: '#000',
+    color: COLORS.textDark,
   },
 
   eyeBtn: {
@@ -476,15 +483,20 @@ const styles = StyleSheet.create({
   eyeIcon: {
     width: wp(5),
     height: hp(2.25),
-    tintColor: '#9AA0A6',
+    tintColor: COLORS.textMuted,
   },
 
   btn: {
-    backgroundColor: '#ed1c24',
-    borderRadius: scale(16),
-    paddingVertical: hp(2.25),
+    backgroundColor: COLORS.primary,
+    borderRadius: scale(14),
+    paddingVertical: hp(2),
     alignItems: 'center',
     marginTop: hp(1.25),
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4,
   },
 
   btnDisabled: {
@@ -492,9 +504,9 @@ const styles = StyleSheet.create({
   },
 
   btnText: {
-    color: '#FFF',
+    color: '#FFFFFF',
     fontSize: FONT.md,
-    fontWeight: '600',
+    fontWeight: '700',
   },
 
   footerBlock: {
@@ -504,29 +516,30 @@ const styles = StyleSheet.create({
   terms: {
     textAlign: 'center',
     fontSize: FONT.xs,
-    color: '#777',
+    color: COLORS.textSecondary,
     marginBottom: hp(2),
   },
 
   link: {
-    color: '#ed1c24',
+    color: COLORS.primary,
     fontWeight: '600',
   },
 
   footer: {
     textAlign: 'center',
     fontSize: FONT.xs,
-    color: '#666',
+    color: COLORS.textSecondary,
   },
 
   register: {
-    color: '#ed1c24',
-    fontWeight: '600',
+    color: COLORS.primary,
+    fontWeight: '700',
   },
   errorText: {
     fontSize: FONT.xs,
-    color: '#ed1c24',
+    color: COLORS.error,
     marginTop: hp(-0.75),
     marginBottom: hp(1.25),
   },
 });
+

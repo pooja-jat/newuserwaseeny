@@ -11,6 +11,7 @@ import { hp, wp } from '../../utils/responsive';
 import { scale } from '../../utils/scale';
 import { FONT_SIZES as FONT } from '../../theme/typography';
 import { getRatingAverage, getRatingCount } from '../../utils/ratingUtils';
+import { COLORS } from '../../theme/colors';
 
 export const RestaurantListCard = memo(
   ({ item, isFavorite, onPress, onFavoritePress }) => {
@@ -51,8 +52,8 @@ export const RestaurantListCard = memo(
           >
             <Heart
               size={16}
-              color={isFavorite ? '#ed1c24' : '#111111'}
-              fill={isFavorite ? '#ed1c24' : 'none'}
+              color={isFavorite ? COLORS.accent : COLORS.textDark}
+              fill={isFavorite ? COLORS.accent : 'none'}
             />
           </TouchableOpacity>
           <View style={styles.listImageDots}>
@@ -74,7 +75,7 @@ export const RestaurantListCard = memo(
               {item.name}
             </Text>
             <View style={styles.listRatingRow}>
-              <Star size={14} color="#F5A623" fill="#F5A623" />
+              <Star size={14} color={COLORS.accent} fill={COLORS.accent} />
               <Text style={styles.listRatingValue}>{ratingValue}</Text>
               <Text style={styles.listRatingCount}>({ratingCount})</Text>
             </View>
@@ -104,14 +105,14 @@ export const RestaurantRecommendCard = memo(
       ? item.cuisines
       : [];
     const cuisineText =
-      cuisines.length > 0 ? cuisines.join(', ') : 'Pizza, Italian, Fast Food';
+      cuisines.length > 0 ? cuisines.join(', ') : 'Fast Food, Drinks';
     const distanceText = item?.distance || null;
     const timeText = item?.deliveryTime
-      ? `${item.deliveryTime} minutes`
-      : '20 - 30 minutes';
+      ? `${item.deliveryTime} mins`
+      : '20-30 mins';
     const ratingValue = getRatingAverage(item);
     const ratingCount = getRatingCount(item);
-    const bestSellerText = item?.bestSeller || 'Popular choice';
+    const bestSellerText = item?.bestSeller || 'Recommended';
 
     return (
       <TouchableOpacity
@@ -135,18 +136,16 @@ export const RestaurantRecommendCard = memo(
           >
             <Heart
               size={16}
-              color={isFavorite ? '#ed1c24' : '#111111'}
-              fill={isFavorite ? '#ed1c24' : 'none'}
+              color={isFavorite ? COLORS.accent : COLORS.textDark}
+              fill={isFavorite ? COLORS.accent : 'none'}
             />
           </TouchableOpacity>
           <View style={styles.imageDots}>
-            {Array.from({ length: 6 }).map((_, index) => (
+            {Array.from({ length: 5 }).map((_, index) => (
               <View
-                key={`dot-${index}`}
+                key={`rec-dot-${index}`}
                 style={
-                  index === 4
-                    ? [styles.dot, styles.dotActive]
-                    : styles.dot
+                  index === 0 ? [styles.dot, styles.dotActive] : styles.dot
                 }
               />
             ))}
@@ -158,7 +157,7 @@ export const RestaurantRecommendCard = memo(
               {item.name}
             </Text>
             <View style={styles.ratingRow}>
-              <Star size={14} color="#F5A623" fill="#F5A623" />
+              <Star size={14} color={COLORS.accent} fill={COLORS.accent} />
               <Text style={styles.ratingValue}>{ratingValue}</Text>
               <Text style={styles.ratingCount}>({ratingCount})</Text>
             </View>
@@ -181,11 +180,10 @@ export const RestaurantRecommendCard = memo(
 );
 
 const styles = StyleSheet.create({
-  // List Card Styles
   listCard: {
-    marginHorizontal: wp(4.44),
-    marginTop: hp(1.75),
+    backgroundColor: '#FFFFFF',
     borderRadius: scale(18),
+    marginHorizontal: wp(4.44),
     backgroundColor: '#FFFFFF',
     elevation: 3,
     shadowColor: '#000',

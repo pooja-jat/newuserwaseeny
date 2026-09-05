@@ -3,19 +3,29 @@
     {
       "_id": "b1",
       "title": "50% OFF on First Order",
+      "subtitle": "Use code ECDFIRST",
       "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600",
       "link": "Offers"
     },
     {
       "_id": "b2",
       "title": "Free Delivery Special",
+      "subtitle": "On all orders above ₹199",
       "imageUrl": "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600",
       "link": "Offers"
     },
     {
       "_id": "b3",
-      "title": "Weekend Feast",
-      "imageUrl": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600",
+      "title": "Weekend Biryani Feast",
+      "subtitle": "Flat ₹100 Cashback",
+      "imageUrl": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600",
+      "link": "Offers"
+    },
+    {
+      "_id": "b4",
+      "title": "Sweet Treats & Desserts",
+      "subtitle": "Buy 1 Get 1 Free",
+      "imageUrl": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=600",
       "link": "Offers"
     }
   ],
@@ -49,6 +59,26 @@
       "_id": "c6",
       "name": "Drinks",
       "image": "https://images.unsplash.com/photo-1544145945-f90425340c7e?w=200"
+    },
+    {
+      "_id": "c7",
+      "name": "Rolls",
+      "image": "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=200"
+    },
+    {
+      "_id": "c8",
+      "name": "Healthy",
+      "image": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=200"
+    },
+    {
+      "_id": "c9",
+      "name": "South Indian",
+      "image": "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=200"
+    },
+    {
+      "_id": "c10",
+      "name": "North Indian",
+      "image": "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200"
     }
   ],
   "sections": {
@@ -82,6 +112,36 @@
         "priceForTwo": 300,
         "isVeg": false,
         "offers": ["Free Fries"]
+      },
+      {
+        "_id": "r3",
+        "id": "r3",
+        "name": "Royal Biryani House",
+        "logo": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500",
+        "coverImage": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500",
+        "rating": 4.9,
+        "ratingCount": 420,
+        "cuisines": ["Biryani", "Mughlai"],
+        "deliveryTime": "30-35 min",
+        "distance": "3.2 km",
+        "priceForTwo": 550,
+        "isVeg": false,
+        "offers": ["Flat ₹100 OFF"]
+      },
+      {
+        "_id": "r4",
+        "id": "r4",
+        "name": "Green Bowl Salads",
+        "logo": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=500",
+        "coverImage": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=500",
+        "rating": 4.6,
+        "ratingCount": 95,
+        "cuisines": ["Healthy", "Salads"],
+        "deliveryTime": "15-20 min",
+        "distance": "1.2 km",
+        "priceForTwo": 350,
+        "isVeg": true,
+        "offers": ["15% OFF"]
       }
     ],
     "exploreRestaurants": [
@@ -140,12 +200,138 @@
         "distance": "1.2 km",
         "priceForTwo": 350,
         "isVeg": true
+      },
+      {
+        "_id": "r5",
+        "id": "r5",
+        "name": "Dragon Wok Chinese",
+        "logo": "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?w=500",
+        "coverImage": "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?w=500",
+        "rating": 4.7,
+        "ratingCount": 310,
+        "cuisines": ["Chinese", "Noodles", "Dimsum"],
+        "deliveryTime": "20-25 min",
+        "distance": "2.4 km",
+        "priceForTwo": 400,
+        "isVeg": false
+      },
+      {
+        "_id": "r6",
+        "id": "r6",
+        "name": "Sweet Tooth Desserts",
+        "logo": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=500",
+        "coverImage": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=500",
+        "rating": 4.9,
+        "ratingCount": 560,
+        "cuisines": ["Desserts", "Bakery", "Ice Cream"],
+        "deliveryTime": "15-20 min",
+        "distance": "1.0 km",
+        "priceForTwo": 250,
+        "isVeg": true
+      },
+      {
+        "_id": "r7",
+        "id": "r7",
+        "name": "Punjab Grill Junction",
+        "logo": "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500",
+        "coverImage": "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500",
+        "rating": 4.7,
+        "ratingCount": 380,
+        "cuisines": ["North Indian", "Tandoori", "Curry"],
+        "deliveryTime": "30-35 min",
+        "distance": "3.5 km",
+        "priceForTwo": 600,
+        "isVeg": false
+      },
+      {
+        "_id": "r8",
+        "id": "r8",
+        "name": "Chennai Dosa Express",
+        "logo": "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=500",
+        "coverImage": "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=500",
+        "rating": 4.8,
+        "ratingCount": 490,
+        "cuisines": ["South Indian", "Dosa", "Filter Coffee"],
+        "deliveryTime": "20-25 min",
+        "distance": "1.8 km",
+        "priceForTwo": 280,
+        "isVeg": true
       }
     ],
-    "popularRestaurants": [],
-    "fastDelivery": [],
-    "freeDelivery": [],
-    "newOnPlatform": [],
+    "popularRestaurants": [
+      {
+        "_id": "r3",
+        "id": "r3",
+        "name": "Royal Biryani House",
+        "rating": 4.9,
+        "deliveryTime": "30-35 min"
+      },
+      {
+        "_id": "r6",
+        "id": "r6",
+        "name": "Sweet Tooth Desserts",
+        "rating": 4.9,
+        "deliveryTime": "15-20 min"
+      },
+      {
+        "_id": "r1",
+        "id": "r1",
+        "name": "The Food Haven",
+        "rating": 4.8,
+        "deliveryTime": "25-30 min"
+      }
+    ],
+    "fastDelivery": [
+      {
+        "_id": "r6",
+        "id": "r6",
+        "name": "Sweet Tooth Desserts",
+        "deliveryTime": "15-20 min",
+        "distance": "1.0 km"
+      },
+      {
+        "_id": "r4",
+        "id": "r4",
+        "name": "Green Bowl Salads",
+        "deliveryTime": "15-20 min",
+        "distance": "1.2 km"
+      },
+      {
+        "_id": "r2",
+        "id": "r2",
+        "name": "Burger Club",
+        "deliveryTime": "20-25 min",
+        "distance": "1.5 km"
+      }
+    ],
+    "freeDelivery": [
+      {
+        "_id": "r1",
+        "id": "r1",
+        "name": "The Food Haven",
+        "offers": ["Free Delivery"]
+      },
+      {
+        "_id": "r8",
+        "id": "r8",
+        "name": "Chennai Dosa Express",
+        "offers": ["Free Delivery"]
+      }
+    ],
+    "newOnPlatform": [
+      {
+        "_id": "r7",
+        "id": "r7",
+        "name": "Punjab Grill Junction",
+        "tag": "New"
+      },
+      {
+        "_id": "r5",
+        "id": "r5",
+        "name": "Dragon Wok Chinese",
+        "tag": "New"
+      }
+    ],
     "recentRestaurants": []
   }
 }

@@ -1,11 +1,12 @@
 import React, { useState, useCallback } from 'react';
 import { ScrollView, RefreshControl } from 'react-native';
+import { COLORS } from '../theme/colors';
 
 export const RefreshableWrapper = ({ 
   children, 
   onRefresh, 
-  colors = ['#ed1c24'],
-  tintColor = '#ed1c24',
+  colors = [COLORS.primary],
+  tintColor = COLORS.primary,
   ...scrollViewProps 
 }) => {
   const [refreshing, setRefreshing] = useState(false);
@@ -38,8 +39,7 @@ export const RefreshableWrapper = ({
   );
 };
 
-
-export const useRefreshControl = (onRefresh, colors = ['#ed1c24']) => {
+export const useRefreshControl = (onRefresh, colors = [COLORS.primary]) => {
   const [refreshing, setRefreshing] = useState(false);
 
   const handleRefresh = useCallback(async () => {
@@ -60,3 +60,4 @@ export const useRefreshControl = (onRefresh, colors = ['#ed1c24']) => {
 };
 
 export default RefreshableWrapper;
+

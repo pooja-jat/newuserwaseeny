@@ -11,6 +11,7 @@ import HomeIcon from '../assets/icons/home.png';
 import OrdersIcon from '../assets/icons/orders.png';
 import SearchIcon from '../assets/icons/search.png';
 import UserIcon from '../assets/icons/user.png';
+import { COLORS } from '../theme/colors';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,12 +21,17 @@ export default function TabNavigator() {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: true,
-        tabBarActiveTintColor: '#FF3D3D',
-        tabBarInactiveTintColor: '#A5A5A5',
+        tabBarActiveTintColor: COLORS.primary,
+        tabBarInactiveTintColor: COLORS.secondaryGreen,
         tabBarStyle: {
-          backgroundColor: '#FFF',
-          borderTopWidth: 0,
+          backgroundColor: '#FFFFFF',
+          borderTopWidth: 1,
+          borderTopColor: COLORS.border,
           elevation: 8,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.06,
+          shadowRadius: 4,
         },
       }}
     >
@@ -39,7 +45,7 @@ export default function TabNavigator() {
               style={{
                 width: 24,
                 height: 24,
-                tintColor: focused ? '#FF3D3D' : '#A5A5A5',
+                tintColor: focused ? COLORS.primary : COLORS.secondaryGreen,
               }}
               resizeMode="contain"
             />
@@ -56,7 +62,7 @@ export default function TabNavigator() {
               style={{
                 width: 24,
                 height: 24,
-                tintColor: focused ? '#FF3D3D' : '#A5A5A5',
+                tintColor: focused ? COLORS.primary : COLORS.secondaryGreen,
               }}
               resizeMode="contain"
             />
@@ -73,7 +79,7 @@ export default function TabNavigator() {
               style={{
                 width: 24,
                 height: 24,
-                tintColor: focused ? '#FF3D3D' : '#A5A5A5',
+                tintColor: focused ? COLORS.primary : COLORS.secondaryGreen,
               }}
               resizeMode="contain"
             />
@@ -91,7 +97,7 @@ export default function TabNavigator() {
               style={{
                 width: 24,
                 height: 24,
-                tintColor: focused ? '#FF3D3D' : '#A5A5A5',
+                tintColor: focused ? COLORS.primary : COLORS.secondaryGreen,
               }}
               resizeMode="contain"
             />
@@ -101,3 +107,4 @@ export default function TabNavigator() {
     </Tab.Navigator>
   );
 }
+
