@@ -13,6 +13,8 @@ import {
   View,
 } from 'react-native';
 
+import { COLORS } from '../theme/colors';
+
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const ICONS = {
@@ -332,12 +334,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 12,
   },
-  radioOuterActive: { borderColor: '#FF3D3D' },
+  radioOuterActive: { borderColor: COLORS.primary },
   radioInner: {
     width: 9,
     height: 9,
     borderRadius: 4.5,
-    backgroundColor: '#FF3D3D',
+    backgroundColor: COLORS.primary,
   },
   label: { fontWeight: '700', color: '#111', fontSize: 13 },
 
@@ -354,7 +356,7 @@ const styles = StyleSheet.create({
   primaryBtn: {
     height: 52,
     borderRadius: 16,
-    backgroundColor: '#FF3D3D',
+    backgroundColor: COLORS.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },

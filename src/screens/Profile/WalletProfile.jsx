@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ChevronLeft, DollarSign } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getWallet } from '../../services/walletService';
+import { COLORS } from '../../theme/colors';
 
 export default function WalletProfile() {
   const navigation = useNavigation();
@@ -71,7 +72,7 @@ export default function WalletProfile() {
 
       {isLoading ? (
         <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color="#E41C26" />
+          <ActivityIndicator size="large" color={COLORS.primary} />
           <Text style={styles.loaderText}>Loading wallet...</Text>
         </View>
       ) : error ? (
@@ -172,12 +173,12 @@ const styles = StyleSheet.create({
   balanceCard: {
     height: 120,
     borderRadius: 14,
-    backgroundColor: '#E41C26',
+    backgroundColor: COLORS.primary,
     padding: 16,
     overflow: 'hidden',
   },
   balanceValue: { color: '#FFF', fontSize: 26, fontWeight: '800' },
-  balanceLabel: { marginTop: 4, color: '#FFE7E7', fontSize: 11 },
+  balanceLabel: { marginTop: 4, color: COLORS.primaryLight, fontSize: 11 },
   balanceGlow: {
     position: 'absolute',
     right: -20,
@@ -257,12 +258,12 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 14,
-    color: '#E41C26',
+    color: COLORS.error,
     textAlign: 'center',
     fontWeight: '500',
   },
   retryBtn: {
-    backgroundColor: '#E41C26',
+    backgroundColor: COLORS.primary,
     paddingHorizontal: 24,
     paddingVertical: 10,
     borderRadius: 8,

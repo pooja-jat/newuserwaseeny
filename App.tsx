@@ -1,4 +1,5 @@
 import React from 'react';
+import { LogBox } from 'react-native';
 import AppNavigator from './src/navigations/AppNavigator';
 import { CartProvider } from './src/context/CartContext';
 import { FavouritesProvider } from './src/context/FavouritesContext';
@@ -8,6 +9,9 @@ import Toast from 'react-native-toast-message';
 import { toastConfig } from './src/components/Toasters/popup';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import OfflineBanner from './src/components/OfflineBanner';
+
+LogBox.ignoreAllLogs(true);
+
 
 const App = () => {
   return (

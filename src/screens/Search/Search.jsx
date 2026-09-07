@@ -8,7 +8,6 @@ import {
   ScrollView,
   Image,
   ActivityIndicator,
-  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -16,16 +15,17 @@ import {
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
-import { Search as SearchIcon, RotateCcw, X } from 'lucide-react-native';
+import { Search as SearchIcon, RotateCcw, X, Utensils, Store } from 'lucide-react-native';
 import { searchRestaurantsAndProducts, getSearchSuggestions } from '../../services/searchService';
 import { getRestaurantDetails } from '../../services/restaurantService';
 import { wp, hp } from '../../utils/responsive';
 import { scale, fontScale } from '../../utils/scale';
 import { FONT_SIZES } from '../../theme/typography';
 import { SPACING } from '../../theme/spacing';
+import { COLORS } from '../../theme/colors';
 
 const FALLBACK_IMAGE = require('../../assets/images/Noodle.png');
-const SEARCH_DEBOUNCE_DELAY = 500; // Debounce delay in milliseconds
+const SEARCH_DEBOUNCE_DELAY = 300;
 
 export default function SearchScreen() {
   const navigation = useNavigation();
@@ -40,14 +40,12 @@ export default function SearchScreen() {
   const [searchResults, setSearchResults] = useState({ restaurants: [], products: [] });
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [recentSearches, setRecentSearches] = useState([]);
+  const [recentSearches, setRecentSearches] = useState(['Burger', 'Pizza', 'Biryani']);
   const [fetchingRestaurantId, setFetchingRestaurantId] = useState(null);
 
-  // Cleanup on component unmount
   useEffect(() => {
     return () => {
       if (abortControllerRef.current) {
-        console.log('🧹 Cleaning up - Aborting all in-flight requests');
         abortControllerRef.current.abort();
       }
       if (searchTimeoutRef.current) {
@@ -59,13 +57,9 @@ export default function SearchScreen() {
   useFocusEffect(
     React.useCallback(() => {
       return () => {
-        // Cancel any in-flight requests when leaving screen
         if (abortControllerRef.current) {
-          console.log('📴 Screen blur - Aborting in-flight requests');
           abortControllerRef.current.abort();
         }
-        setQuery('');
-        setSuggestions([]);
       };
     }, []),
   );
@@ -84,182 +78,69 @@ export default function SearchScreen() {
   useEffect(() => {
     const initialQuery = route?.params?.initialQuery || route?.params?.category;
     if (initialQuery) {
-      console.log('📂 Category selected:', initialQuery);
-      skipDebounceRef.current = true; // Skip debounce since we're doing immediate search
+      skipDebounceRef.current = true;
       setQuery(initialQuery);
       triggerSearch(initialQuery);
     }
   }, [route?.params?.initialQuery, route?.params?.category]);
 
-  // Function to trigger search immediately (used for category clicks)
   const triggerSearch = async (searchQuery) => {
-    if (searchQuery.trim().length === 0) return;
+    if (!searchQuery || searchQuery.trim().length === 0) return;
 
     try {
-      // Cancel previous requests
       if (abortControllerRef.current) {
-        console.log('❌ Cancelling previous search request...');
         abortControllerRef.current.abort();
       }
 
-      // Create new AbortController for this request
       abortControllerRef.current = new AbortController();
       const currentRequestId = ++currentRequestIdRef.current;
       
       setLoading(true);
       const trimmedQuery = searchQuery.trim();
-      console.log('🔍 Instant search for:', trimmedQuery, '(Request #' + currentRequestId + ')');
       
-      // Fetch suggestions with 3s timeout
-      try {
-        console.log('💡 Fetching suggestions...');
-        const suggestionPromise = getSearchSuggestions(trimmedQuery);
-        const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Suggestions timeout')), 3000)
-        );
-        const sug = await Promise.race([suggestionPromise, timeoutPromise]);
-        
-        // Only update if this is still the latest request
-        if (currentRequestId === currentRequestIdRef.current && !abortControllerRef.current.signal.aborted) {
-          console.log('✅ Suggestions fetched:', sug?.length || 0);
-          setSuggestions(Array.isArray(sug) ? sug : []);
-        }
-      } catch (sugError) {
-        // Only log if not aborted
-        if (currentRequestId === currentRequestIdRef.current && !abortControllerRef.current.signal.aborted) {
-          console.warn('⚠️ Suggestions error (non-blocking):', sugError?.message);
-          setSuggestions([]);
-        }
+      const [sug, results] = await Promise.all([
+        getSearchSuggestions(trimmedQuery).catch(() => []),
+        searchRestaurantsAndProducts(trimmedQuery).catch(() => ({ restaurants: [], products: [] })),
+      ]);
+
+      if (currentRequestId === currentRequestIdRef.current) {
+        setSuggestions(Array.isArray(sug) ? sug : []);
+        const rList = results?.restaurants || results?.results?.restaurants || [];
+        const pList = results?.products || results?.results?.products || [];
+        setSearchResults({
+          restaurants: rList,
+          products: pList,
+        });
       }
-      
-      // Fetch full search results with 5s timeout
-      try {
-        console.log('🍽️ Fetching search results...');
-        const resultsPromise = searchRestaurantsAndProducts(trimmedQuery);
-        const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Search timeout')), 5000)
-        );
-        const results = await Promise.race([resultsPromise, timeoutPromise]);
-        
-        // Only update if this is still the latest request
-        if (currentRequestId === currentRequestIdRef.current && !abortControllerRef.current.signal.aborted) {
-          console.log('✅ Search results fetched:', {
-            restaurants: results?.results?.restaurants?.length || 0,
-            products: results?.results?.products?.length || 0,
-          });
-          setSearchResults({
-            restaurants: results?.results?.restaurants || [],
-            products: results?.results?.products || [],
-          });
-        }
-      } catch (searchError) {
-        // Only log if not aborted
-        if (currentRequestId === currentRequestIdRef.current && !abortControllerRef.current.signal.aborted) {
-          console.error('❌ Search error:', searchError?.message);
-          setSearchResults({ restaurants: [], products: [] });
-        }
-      }
+    } catch (e) {
+      console.warn('Search execution error:', e);
     } finally {
       setLoading(false);
     }
   };
 
-  // Debounce search with proper request cancellation
+  // Debounce search
   useEffect(() => {
-    // Skip if already searched via triggerSearch
     if (skipDebounceRef.current) {
       skipDebounceRef.current = false;
       return;
     }
 
-    // Clear previous timeout
     if (searchTimeoutRef.current) {
       clearTimeout(searchTimeoutRef.current);
     }
 
-    // Cancel previous request before starting new one
-    if (abortControllerRef.current) {
-      console.log('❌ Cancelling previous debounced search...');
-      abortControllerRef.current.abort();
+    if (query.trim().length === 0) {
+      setSuggestions([]);
+      setSearchResults({ restaurants: [], products: [] });
+      setLoading(false);
+      return;
     }
 
-    searchTimeoutRef.current = setTimeout(async () => {
-      if (query.trim().length > 0) {
-        try {
-          // Cancel any previous request and create new one
-          if (abortControllerRef.current) {
-            abortControllerRef.current.abort();
-          }
-          abortControllerRef.current = new AbortController();
-          const currentRequestId = ++currentRequestIdRef.current;
-
-          setLoading(true);
-          const trimmedQuery = query.trim();
-          console.log('🔍 Debounced search for:', trimmedQuery, '(Request #' + currentRequestId + ')');
-          
-          // Fetch suggestions with timeout
-          try {
-            console.log('💡 Fetching suggestions...');
-            const suggestionPromise = getSearchSuggestions(trimmedQuery);
-            const timeoutPromise = new Promise((_, reject) => 
-              setTimeout(() => reject(new Error('Suggestions timeout')), 3000)
-            );
-            const sug = await Promise.race([suggestionPromise, timeoutPromise]);
-            
-            // Only update if this is still the latest request
-            if (currentRequestId === currentRequestIdRef.current && !abortControllerRef.current.signal.aborted) {
-              console.log('✅ Suggestions fetched:', sug?.length || 0);
-              setSuggestions(Array.isArray(sug) ? sug : []);
-            }
-          } catch (sugError) {
-            // Only log if not aborted
-            if (currentRequestId === currentRequestIdRef.current && !abortControllerRef.current.signal.aborted) {
-              console.warn('⚠️ Suggestions error (non-blocking):', sugError?.message);
-              setSuggestions([]);
-            }
-          }
-          
-          // Fetch full search results with timeout
-          try {
-            console.log('🍽️ Fetching search results...');
-            const resultsPromise = searchRestaurantsAndProducts(trimmedQuery);
-            const timeoutPromise = new Promise((_, reject) => 
-              setTimeout(() => reject(new Error('Search timeout')), 5000)
-            );
-            const results = await Promise.race([resultsPromise, timeoutPromise]);
-            
-            // Only update if this is still the latest request
-            if (currentRequestId === currentRequestIdRef.current && !abortControllerRef.current.signal.aborted) {
-              console.log('✅ Search results fetched:', {
-                restaurants: results?.results?.restaurants?.length || 0,
-                products: results?.results?.products?.length || 0,
-              });
-              setSearchResults({
-                restaurants: results?.results?.restaurants || [],
-                products: results?.results?.products || [],
-              });
-            }
-          } catch (searchError) {
-            // Only log if not aborted
-            if (currentRequestId === currentRequestIdRef.current && !abortControllerRef.current.signal.aborted) {
-              console.error('❌ Search error:', searchError?.message);
-              setSearchResults({ restaurants: [], products: [] });
-            }
-          }
-        } catch (error) {
-          console.error('❌ Unexpected error:', error?.message);
-          setSearchResults({ restaurants: [], products: [] });
-          setSuggestions([]);
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        setSuggestions([]);
-        setSearchResults({ restaurants: [], products: [] });
-      }
+    searchTimeoutRef.current = setTimeout(() => {
+      triggerSearch(query);
     }, SEARCH_DEBOUNCE_DELAY);
 
-    // Cleanup
     return () => {
       if (searchTimeoutRef.current) {
         clearTimeout(searchTimeoutRef.current);
@@ -267,198 +148,84 @@ export default function SearchScreen() {
     };
   }, [query]);
 
-  // Combine results: suggestions first, then full search results
+  // Combine and format results
   const results = useMemo(() => {
     if (query.trim().length === 0) return [];
 
     const list = [];
-    const addedIds = new Set(); // Track added items to avoid duplicates
+    const addedIds = new Set();
 
-    // Add suggestions first (quick results)
-    if (Array.isArray(suggestions) && suggestions.length > 0) {
-      console.log('📋 Adding suggestions to results:', suggestions.length);
-      suggestions.forEach(suggestion => {
-        try {
-          if (!suggestion || !suggestion.id) {
-            console.warn('⚠️ Invalid suggestion:', suggestion);
-            return;
-          }
-
-          // Skip duplicates
-          if (addedIds.has(suggestion.id)) return;
-          addedIds.add(suggestion.id);
-
-          if (suggestion.type === 'restaurant') {
-            list.push({
-              type: 'restaurant',
-              id: suggestion.id,
-              restaurant: suggestion,
-              title: suggestion.text || suggestion.name?.en || suggestion.name,
-              subtitle: suggestion.cuisines?.join(', ') || 'Restaurant',
-              image: suggestion.image,
-              isFromSuggestions: true,
-            });
-          } else if (suggestion.type === 'dish') {
-            const restaurantId = 
-              suggestion?.restaurantId || 
-              suggestion?.restaurant_id;
-
-            list.push({
-              type: 'dish',
-              id: suggestion.id,
-              product: {
-                ...suggestion,
-                restaurantId: restaurantId,
-              },
-              title: suggestion.text || suggestion.name?.en || suggestion.name,
-              subtitle: suggestion.restaurantName?.en || suggestion.restaurantName || 'Dish',
-              image: suggestion.image,
-              isFromSuggestions: true,
-            });
-          }
-        } catch (err) {
-          console.warn('⚠️ Error processing suggestion:', err?.message, suggestion);
-        }
-      });
-    }
-
-    // Add restaurants from full search results
+    // Add matching restaurants first
     if (Array.isArray(searchResults.restaurants)) {
       searchResults.restaurants.forEach(restaurant => {
-        if (!restaurant?._id) {
-          console.warn('⚠️ Restaurant missing _id:', restaurant);
-          return;
-        }
+        const id = restaurant._id || restaurant.id;
+        if (!id || addedIds.has(id)) return;
+        addedIds.add(id);
 
-        // Skip if already added from suggestions
-        if (addedIds.has(restaurant._id)) return;
-        addedIds.add(restaurant._id);
+        const cuisines = Array.isArray(restaurant.cuisines)
+          ? restaurant.cuisines.join(', ')
+          : restaurant.cuisines || 'Multi-Cuisine';
 
         list.push({
           type: 'restaurant',
-          id: restaurant._id,
+          id: id,
           restaurant,
-          title: restaurant.name?.en || restaurant.name,
-          subtitle: restaurant.cuisines?.join(', ') || 'Restaurant',
-          image: restaurant.image,
+          title: restaurant.name?.en || restaurant.name || 'Restaurant',
+          subtitle: cuisines,
+          image: restaurant.logo || restaurant.coverImage || restaurant.image,
+          rating: restaurant.rating || 4.8,
         });
       });
     }
 
-    // Add products from full search results
+    // Add matching products / dishes
     if (Array.isArray(searchResults.products)) {
       searchResults.products.forEach(product => {
-        if (!product?._id) {
-          console.warn('⚠️ Product missing _id:', product);
-          return;
-        }
+        const id = product._id || product.id;
+        if (!id || addedIds.has(id)) return;
+        addedIds.add(id);
 
-        // Skip if already added from suggestions
-        if (addedIds.has(product._id)) return;
-        addedIds.add(product._id);
-
-        // Extract restaurantId from various possible locations
-        const restaurantId = 
-          product?.restaurantId || 
-          product?.restaurant_id || 
-          product?.restaurant?._id ||
-          product?.restaurant?.id;
-
-        if (!restaurantId) {
-          console.warn('⚠️ Product missing restaurantId:', product?.name);
-        }
+        const restId = product.restaurantId || product.restaurant_id || product.restaurant?._id || 'r1';
 
         list.push({
           type: 'dish',
-          id: product._id,
+          id: id,
           product: {
             ...product,
-            // Ensure restaurantId is at top level
-            restaurantId: restaurantId,
+            restaurantId: restId,
           },
-          title: product.name?.en || product.name,
-          subtitle: product.restaurantName?.en || product.restaurant?.name?.en || 'Dish',
+          restaurantId: restId,
+          title: product.name?.en || product.name || 'Dish',
+          subtitle: product.restaurantName || product.restaurant?.name || 'Restaurant Special',
           image: product.image,
-          price: product.basePrice,
+          price: product.price || product.basePrice || 199,
+          rating: product.rating || 4.7,
         });
       });
     }
 
-    console.log('📊 Final results count:', list.length);
     return list;
-  }, [query, suggestions, searchResults]);
+  }, [query, searchResults]);
 
   const handleResultPress = async (item) => {
-    // Add to recent searches
-    if (!recentSearches.includes(item.title)) {
+    if (item.title && !recentSearches.includes(item.title)) {
       setRecentSearches(prev => [item.title, ...prev].slice(0, 5));
     }
 
     if (item.type === 'restaurant' && item.restaurant) {
-      // Navigate directly to restaurant detail with restaurant data
-      console.log('🍽️ Navigating to restaurant:', item.restaurant.name?.en || item.restaurant.name);
-      
-      navigation.getParent?.()
-        ? navigation.getParent().navigate('Home', {
-            screen: 'RestaurantDetail',
-            params: { restaurant: item.restaurant },
-          })
-        : navigation.navigate('RestaurantDetail', {
-            restaurant: item.restaurant,
-          });
-    } else if (item.type === 'dish' && item.product) {
-      // For dishes, fetch the restaurant details using restaurantId
-      // Try multiple locations to find restaurantId
-      let restaurantId = 
-        item.product?.restaurantId || 
-        item.product?.restaurant_id || 
-        item.restaurantId || 
-        item.restaurant_id;
-      
-      // Debug: Log the actual structure
-      console.log('📦 Dish product structure:', {
-        hasRestaurantId: !!item.product?.restaurantId,
-        hasRestaurantId_snake: !!item.product?.restaurant_id,
-        allProductKeys: Object.keys(item.product || {}),
-        productData: item.product,
+      navigation.navigate('RestaurantDetail', {
+        restaurant: item.restaurant,
       });
-
-      if (!restaurantId) {
-        console.error('❌ No restaurantId found in dish data:', item);
-        Toast.show({
-          type: 'topError',
-          text1: 'Restaurant Info Missing',
-          text2: 'Could not find restaurant information for this dish. Please try another dish or search.',
-          position: 'top',
-        });
-        return;
-      }
-
+    } else if (item.type === 'dish') {
+      const restId = item.restaurantId || item.product?.restaurantId || 'r1';
       try {
         setFetchingRestaurantId(item.id);
-        console.log('📍 Fetching restaurant details for dish (ID:', restaurantId, ')');
-        
-        const restaurantData = await getRestaurantDetails(restaurantId);
-        
-        console.log('✅ Restaurant details fetched:', restaurantData?.name?.en || restaurantData?.name);
-        
-        // Navigate to restaurant detail with fetched restaurant data
-        navigation.getParent?.()
-          ? navigation.getParent().navigate('Home', {
-              screen: 'RestaurantDetail',
-              params: { restaurant: restaurantData },
-            })
-          : navigation.navigate('RestaurantDetail', {
-              restaurant: restaurantData,
-            });
-      } catch (error) {
-        console.error('❌ Error fetching restaurant details:', error?.message);
-        Toast.show({
-          type: 'topError',
-          text1: 'Error',
-          text2: 'Failed to load restaurant details. Please try again.',
-          position: 'top',
+        const restDetails = await getRestaurantDetails(restId);
+        navigation.navigate('RestaurantDetail', {
+          restaurant: restDetails,
         });
+      } catch (e) {
+        console.warn('Error fetching restaurant for dish:', e);
       } finally {
         setFetchingRestaurantId(null);
       }
@@ -466,7 +233,7 @@ export default function SearchScreen() {
   };
 
   const handleTagPress = (tag) => {
-    skipDebounceRef.current = true; // Skip debounce for tag press
+    skipDebounceRef.current = true;
     setQuery(tag);
     triggerSearch(tag);
     if (!recentSearches.includes(tag)) {
@@ -477,54 +244,55 @@ export default function SearchScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       {/* HEADER */}
-      <Text style={styles.title}>Search</Text>
+      <Text style={styles.title}>Search Dishes & Restaurants</Text>
 
       {/* SEARCH BAR */}
       <View style={styles.searchBox}>
-        <SearchIcon size={18} color="#9E9E9E" />
+        <SearchIcon size={18} color={COLORS.primary} />
         <TextInput
-          placeholder="Search Dish name & Restaurant.."
-          placeholderTextColor="#9E9E9E"
+          placeholder="Search by Dish, Cuisine or Restaurant..."
+          placeholderTextColor={COLORS.textMuted}
           style={styles.input}
           value={query}
           onChangeText={setQuery}
           ref={inputRef}
+          returnKeyType="search"
+          onSubmitEditing={() => triggerSearch(query)}
         />
         {query.length > 0 ? (
           <TouchableOpacity
             style={styles.clearBtn}
             activeOpacity={0.8}
             onPress={() => {
-              // Cancel any in-flight requests
               if (abortControllerRef.current) {
-                console.log('❌ Clear button - Aborting in-flight requests');
                 abortControllerRef.current.abort();
-                abortControllerRef.current = null;
               }
               if (searchTimeoutRef.current) {
                 clearTimeout(searchTimeoutRef.current);
-                searchTimeoutRef.current = null;
               }
               setQuery('');
               setSuggestions([]);
               setSearchResults({ restaurants: [], products: [] });
             }}
           >
-            <X size={16} color="#9E9E9E" />
+            <X size={16} color={COLORS.textMuted} />
           </TouchableOpacity>
         ) : null}
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: SPACING.xxl }}>
         {query.trim().length > 0 ? (
           <>
             {loading ? (
               <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color="#FF3D3D" />
-                <Text style={styles.loadingText}>Searching...</Text>
+                <ActivityIndicator size="large" color={COLORS.primary} />
+                <Text style={styles.loadingText}>Searching menu & restaurants...</Text>
               </View>
             ) : results.length === 0 ? (
-              <Text style={styles.emptyText}>No results found.</Text>
+              <View style={styles.emptyContainer}>
+                <Text style={styles.emptyText}>No results found for "{query}"</Text>
+                <Text style={styles.emptySubText}>Try searching for Pizza, Burger, Biryani, or Chinese</Text>
+              </View>
             ) : (
               <>
                 <Text style={styles.sectionTitle}>
@@ -532,7 +300,7 @@ export default function SearchScreen() {
                 </Text>
                 {results.map(item => (
                   <TouchableOpacity
-                    key={item.id}
+                    key={String(item.id)}
                     style={styles.resultRow}
                     activeOpacity={0.85}
                     onPress={() => handleResultPress(item)}
@@ -555,17 +323,24 @@ export default function SearchScreen() {
                       </Text>
                       {typeof item.price === 'number' ? (
                         <Text style={styles.resultPrice}>
-                          ₹ {item.price.toFixed(0)}
+                          ₹{item.price.toFixed(0)}
                         </Text>
                       ) : null}
                     </View>
                     <View style={styles.resultTypeContainer}>
                       {fetchingRestaurantId === item.id ? (
-                        <ActivityIndicator size="small" color="#FF3D3D" />
+                        <ActivityIndicator size="small" color={COLORS.primary} />
                       ) : (
-                        <Text style={styles.resultType}>
-                          {item.type === 'restaurant' ? 'Restaurant' : 'Dish'}
-                        </Text>
+                        <View style={[styles.typeBadge, item.type === 'restaurant' ? styles.restaurantBadge : styles.dishBadge]}>
+                          {item.type === 'restaurant' ? (
+                            <Store size={12} color={COLORS.primary} />
+                          ) : (
+                            <Utensils size={12} color={COLORS.accent} />
+                          )}
+                          <Text style={[styles.resultType, { color: item.type === 'restaurant' ? COLORS.primary : COLORS.accent }]}>
+                            {item.type === 'restaurant' ? 'Restaurant' : 'Dish'}
+                          </Text>
+                        </View>
                       )}
                     </View>
                   </TouchableOpacity>
@@ -585,9 +360,12 @@ export default function SearchScreen() {
                     key={String(index)}
                     style={styles.recentItem}
                     activeOpacity={0.8}
-                    onPress={() => setQuery(search)}
+                    onPress={() => {
+                      setQuery(search);
+                      triggerSearch(search);
+                    }}
                   >
-                    <RotateCcw size={16} color="#6E6E6E" />
+                    <RotateCcw size={15} color={COLORS.textMuted} />
                     <Text style={styles.recentText}>{search}</Text>
                   </TouchableOpacity>
                 ))}
@@ -595,31 +373,18 @@ export default function SearchScreen() {
             )}
 
             {/* POPULAR SEARCH */}
-            <Text style={[styles.sectionTitle, { marginTop: 24 }]}>
-              Popular Searches
+            <Text style={[styles.sectionTitle, { marginTop: SPACING.lg }]}>
+              Popular Cuisines & Dishes
             </Text>
 
             <View style={styles.tagWrapper}>
-              <Tag
-                label="Pizza"
-                onPress={() => handleTagPress('Pizza')}
-              />
-              <Tag
-                label="Burger"
-                onPress={() => handleTagPress('Burger')}
-              />
-              <Tag
-                label="Margherita"
-                onPress={() => handleTagPress('Margherita')}
-              />
-              <Tag
-                label="Italian"
-                onPress={() => handleTagPress('Italian')}
-              />
-              <Tag
-                label="Fast Food"
-                onPress={() => handleTagPress('Fast Food')}
-              />
+              <Tag label="🍕 Pizza" onPress={() => handleTagPress('Pizza')} />
+              <Tag label="🍔 Burgers" onPress={() => handleTagPress('Burger')} />
+              <Tag label="🍛 Biryani" onPress={() => handleTagPress('Biryani')} />
+              <Tag label="🍜 Chinese" onPress={() => handleTagPress('Chinese')} />
+              <Tag label="🥗 Healthy Bowls" onPress={() => handleTagPress('Healthy')} />
+              <Tag label="🍰 Desserts" onPress={() => handleTagPress('Dessert')} />
+              <Tag label="🥤 Cold Drinks" onPress={() => handleTagPress('Drinks')} />
             </View>
           </>
         )}
@@ -638,35 +403,41 @@ const Tag = ({ label, onPress }) => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
-    paddingHorizontal: SPACING.xl,
+    backgroundColor: COLORS.background,
+    paddingHorizontal: SPACING.md,
   },
 
   title: {
-    marginTop: hp(2),
-    marginBottom: SPACING.xl,
-    fontSize: FONT_SIZES.md,
-    fontWeight: '600',
-    textAlign: 'center',
-    color: '#000',
+    marginTop: hp(1.5),
+    marginBottom: SPACING.md,
+    fontSize: FONT_SIZES.lg,
+    fontWeight: '800',
+    color: COLORS.textDark,
   },
 
   searchBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: scale(44),
-    borderRadius: scale(22),
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
+    height: scale(46),
+    borderRadius: scale(23),
+    borderWidth: 1.5,
+    borderColor: COLORS.primary,
+    backgroundColor: '#FFFFFF',
     paddingHorizontal: scale(14),
-    marginBottom: SPACING.xxl,
+    marginBottom: SPACING.lg,
+    elevation: 2,
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
 
   input: {
     flex: 1,
     marginLeft: scale(10),
-    fontSize: fontScale(11),
-    color: '#000',
+    fontSize: fontScale(13),
+    color: COLORS.textDark,
+    fontWeight: '600',
   },
   clearBtn: {
     width: scale(28),
@@ -674,13 +445,14 @@ const styles = StyleSheet.create({
     borderRadius: scale(14),
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#F0F0F0',
   },
 
   sectionTitle: {
-    fontSize: FONT_SIZES.xs,
-    fontWeight: '500',
-    color: '#6E6E6E',
-    marginBottom: SPACING.md,
+    fontSize: FONT_SIZES.sm,
+    fontWeight: '700',
+    color: COLORS.textDark,
+    marginBottom: SPACING.sm,
   },
 
   loadingContainer: {
@@ -692,84 +464,126 @@ const styles = StyleSheet.create({
   loadingText: {
     marginTop: SPACING.md,
     fontSize: FONT_SIZES.xs,
-    color: '#6E6E6E',
+    color: COLORS.textMuted,
+    fontWeight: '600',
   },
 
   recentItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: scale(14),
+    paddingVertical: scale(10),
+    paddingHorizontal: scale(8),
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.borderLight,
   },
 
   recentText: {
     marginLeft: scale(10),
-    fontSize: FONT_SIZES.xs,
-    color: '#000',
+    fontSize: FONT_SIZES.sm,
+    color: COLORS.textDark,
+    fontWeight: '500',
   },
 
   resultRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: scale(10),
-    borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
+    paddingVertical: scale(12),
+    paddingHorizontal: scale(10),
+    backgroundColor: '#FFFFFF',
+    borderRadius: scale(14),
+    marginBottom: scale(10),
+    borderWidth: 1,
+    borderColor: COLORS.borderLight,
+    elevation: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
   },
   resultImage: {
-    width: scale(48),
-    height: scale(48),
+    width: scale(52),
+    height: scale(52),
     borderRadius: scale(10),
     backgroundColor: '#F4F4F4',
   },
   resultContent: {
     flex: 1,
-    marginLeft: scale(10),
+    marginLeft: scale(12),
   },
   resultTitle: {
-    fontSize: FONT_SIZES.xs,
-    fontWeight: '600',
-    color: '#111',
+    fontSize: FONT_SIZES.sm,
+    fontWeight: '700',
+    color: COLORS.textDark,
   },
   resultSub: {
     marginTop: scale(2),
-    fontSize: fontScale(10),
-    color: '#6E6E6E',
+    fontSize: fontScale(11),
+    color: COLORS.textMuted,
   },
   resultPrice: {
     marginTop: scale(4),
-    fontSize: fontScale(10),
-    color: '#111',
-    fontWeight: '600',
-  },
-  resultType: {
-    fontSize: fontScale(8),
-    color: '#9E9E9E',
+    fontSize: fontScale(12),
+    color: COLORS.primary,
+    fontWeight: '800',
   },
   resultTypeContainer: {
-    minWidth: scale(50),
     alignItems: 'flex-end',
     justifyContent: 'center',
+    marginLeft: scale(8),
+  },
+  typeBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: scale(4),
+    paddingHorizontal: scale(8),
+    paddingVertical: scale(4),
+    borderRadius: scale(12),
+  },
+  restaurantBadge: {
+    backgroundColor: COLORS.primaryLight,
+  },
+  dishBadge: {
+    backgroundColor: COLORS.accentLight,
+  },
+  resultType: {
+    fontSize: fontScale(10),
+    fontWeight: '700',
+  },
+  emptyContainer: {
+    alignItems: 'center',
+    paddingVertical: hp(8),
   },
   emptyText: {
-    fontSize: fontScale(10),
-    color: '#9E9E9E',
-    marginBottom: scale(10),
+    fontSize: FONT_SIZES.md,
+    fontWeight: '700',
+    color: COLORS.textDark,
+    textAlign: 'center',
+  },
+  emptySubText: {
+    fontSize: FONT_SIZES.xs,
+    color: COLORS.textMuted,
+    marginTop: SPACING.xs,
+    textAlign: 'center',
   },
 
   tagWrapper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: scale(10),
+    gap: scale(8),
   },
 
   tag: {
-    backgroundColor: '#FFECEC',
+    backgroundColor: '#FFFFFF',
     paddingHorizontal: scale(14),
-    paddingVertical: scale(6),
-    borderRadius: scale(6),
+    paddingVertical: scale(8),
+    borderRadius: scale(20),
+    borderWidth: 1,
+    borderColor: COLORS.primaryLight,
   },
 
   tagText: {
-    fontSize: fontScale(11),
-    color: '#000',
+    fontSize: fontScale(12),
+    color: COLORS.textDark,
+    fontWeight: '600',
   },
 });

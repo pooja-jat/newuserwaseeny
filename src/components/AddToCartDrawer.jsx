@@ -19,6 +19,7 @@ import Toast from 'react-native-toast-message';
 import { CartContext } from '../context/CartContext';
 import { buildCartLineId } from '../services/cartPricing';
 import { debounceAsync } from '../utils/debounce';
+import { COLORS } from '../theme/colors';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -837,13 +838,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   radioOuterActive: {
-    borderColor: '#FF3D3D',
+    borderColor: COLORS.primary,
   },
   radioInner: {
     width: 9,
     height: 9,
     borderRadius: 4.5,
-    backgroundColor: '#FF3D3D',
+    backgroundColor: COLORS.primary,
   },
   checkbox: {
     width: 18,
@@ -856,8 +857,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
   },
   checkboxChecked: {
-    borderColor: '#FF3D3D',
-    backgroundColor: '#FF3D3D',
+    borderColor: COLORS.primary,
+    backgroundColor: COLORS.primary,
   },
   checkboxTick: {
     color: '#FFF',
@@ -929,7 +930,7 @@ const styles = StyleSheet.create({
   },
   totalValue: {
     fontSize: 18,
-    color: '#111',
+    color: COLORS.primary,
     fontWeight: '900',
   },
   priceBreakdownPreview: {
@@ -949,7 +950,7 @@ const styles = StyleSheet.create({
   },
   addCartBtn: {
     marginTop: 12,
-    backgroundColor: '#FF3D3D',
+    backgroundColor: COLORS.primary,
     borderRadius: 16,
     height: 46,
     justifyContent: 'center',

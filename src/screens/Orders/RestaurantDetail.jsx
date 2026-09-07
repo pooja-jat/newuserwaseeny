@@ -12,6 +12,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { scale } from '../../utils/scale';
 import { FONT_SIZES } from '../../theme/typography';
 import { SPACING } from '../../theme/spacing';
+import { COLORS } from '../../theme/colors';
 import AddToCartDrawer from '../../components/AddToCartDrawer';
 import { CartContext } from '../../context/CartContext';
 import { FavouritesContext } from '../../context/FavouritesContext';
@@ -625,7 +626,7 @@ const styles = StyleSheet.create({
   },
   retryBtn: {
     alignSelf: 'flex-start',
-    backgroundColor: '#FF3D3D',
+    backgroundColor: COLORS.primary,
     paddingHorizontal: SPACING.md,
     paddingVertical: scale(6),
     borderRadius: scale(12),

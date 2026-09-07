@@ -16,12 +16,12 @@ import { Heart, Tag, Wallet } from 'lucide-react-native';
 import { useAuth } from '../../context/AuthContext';
 import DeleteAccountPopUp from './DeleteAccountPopUp';
 import LoadingModal from '../../components/LoadingModal';
-import apiClient from '../../config/apiClient';
-import { USER_ROUTES } from '../../config/routes';
+import { getUserProfile } from '../../services/userService';
 import { wp, hp } from '../../utils/responsive';
 import { scale } from '../../utils/scale';
 import { FONT_SIZES } from '../../theme/typography';
 import { SPACING } from '../../theme/spacing';
+import { COLORS } from '../../theme/colors';
 
 const { width } = Dimensions.get('window');
 
@@ -63,12 +63,11 @@ function ProfileHome() {
     
     try {
       setIsLoadingProfile(true);
-      const response = await apiClient.get(USER_ROUTES.profile);
-      const user = response?.data?.user || response?.data;
+      const user = await getUserProfile();
       setUserData(user);
       lastFetchTimeRef.current = now; 
     } catch (error) {
-      console.error('Error fetching user profile:', error);
+      console.warn('Error fetching user profile:', error);
     } finally {
       setIsLoadingProfile(false);
     }
@@ -125,8 +124,8 @@ function ProfileHome() {
           <RefreshControl
             refreshing={isRefreshing}
             onRefresh={handleRefresh}
-            colors={['#E41C26']}
-            tintColor="#E41C26"
+            colors={[COLORS.primary]}
+            tintColor={COLORS.primary}
           />
         }
       >
@@ -147,7 +146,7 @@ function ProfileHome() {
             />
           </View>
           {isLoadingProfile ? (
-            <ActivityIndicator color="#E41C26" style={{ marginTop: 12 }} />
+            <ActivityIndicator color={COLORS.primary} style={{ marginTop: 12 }} />
           ) : (
             <>
               <Text style={styles.name}>{userData?.name || 'User'}</Text>
@@ -163,7 +162,7 @@ function ProfileHome() {
             onPress={() => navigation.navigate('Favourite')}
           >
             <View style={styles.iconCircle}>
-              <Heart size={20} color="#E41C26" />
+              <Heart size={20} color={COLORS.primary} />
             </View>
             <Text style={styles.quickActionText}>Favourites</Text>
           </TouchableOpacity>
@@ -174,7 +173,7 @@ function ProfileHome() {
             onPress={() => navigation.navigate('Coupons')}
           >
             <View style={styles.iconCircle}>
-              <Tag size={20} color="#E41C26" />
+              <Tag size={20} color={COLORS.primary} />
             </View>
             <Text style={styles.quickActionText}>Coupons</Text>
           </TouchableOpacity>
@@ -188,7 +187,7 @@ function ProfileHome() {
         >
           <View style={styles.walletLeft}>
             <View style={styles.iconCircle}>
-              <Wallet size={20} color="#E41C26" />
+              <Wallet size={20} color={COLORS.primary} />
             </View>
             <Text style={styles.walletText}>Wallet</Text>
           </View>
@@ -323,7 +322,7 @@ const styles = StyleSheet.create({
 
   /* Header */
   header: {
-    backgroundColor: '#E41C26',
+    backgroundColor: COLORS.primary,
     paddingTop: scale(60),
     paddingBottom: SPACING.lg,
     height: hp(20),
@@ -380,7 +379,7 @@ const styles = StyleSheet.create({
   quickActionCard: {
     flex: 1,
     marginTop: scale(20),
-    backgroundColor: '#FDF8F8',
+    backgroundColor: COLORS.primaryLight,
     borderRadius: scale(12),
     paddingVertical: scale(8),
     alignItems: 'center',
@@ -394,7 +393,7 @@ const styles = StyleSheet.create({
     width: scale(44),
     height: scale(44),
     borderRadius: scale(22),
-    backgroundColor: '#FFF5F5',
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
     // marginBottom: 8,
@@ -411,7 +410,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#FDF8F8',
+    backgroundColor: COLORS.primaryLight,
     marginHorizontal: SPACING.lg,
     marginTop: SPACING.sm,
     padding: SPACING.lg,
@@ -434,7 +433,7 @@ const styles = StyleSheet.create({
 
   walletAmount: {
     fontSize: FONT_SIZES.sm,
-    color: '#E41C26',
+    color: COLORS.primary,
     fontWeight: '700',
   },
 

@@ -15,6 +15,7 @@ import Toast from 'react-native-toast-message';
 import MaterialTextInput from '../../components/input/MaterialTextInput';
 import apiClient from '../../config/apiClient';
 import { USER_ROUTES } from '../../config/routes';
+import { COLORS } from '../../theme/colors';
 
 const { width, height } = Dimensions.get('window');
 
@@ -227,7 +228,7 @@ const styles = StyleSheet.create({
   button: {
     width: '100%',
     height: s(44),
-    backgroundColor: '#ed1c24',
+    backgroundColor: COLORS.primary,
     borderRadius: s(12),
     alignItems: 'center',
     justifyContent: 'center',

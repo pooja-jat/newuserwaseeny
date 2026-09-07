@@ -4,6 +4,7 @@ import { Heart, Minus, Plus } from 'lucide-react-native';
 import { scale } from '../../utils/scale';
 import { FONT_SIZES } from '../../theme/typography';
 import { SPACING } from '../../theme/spacing';
+import { COLORS } from '../../theme/colors';
 
 export const MenuItemCard = memo(({
   item,
@@ -27,7 +28,10 @@ export const MenuItemCard = memo(({
         android_ripple={{ color: '#F5F5F5', borderless: false }}
       >
         <View style={styles.itemImgWrap}>
-          <Image source={{ uri: item.image }} style={styles.itemImg} />
+          <Image
+            source={item.image ? { uri: item.image } : require('../../assets/images/Food.png')}
+            style={styles.itemImg}
+          />
           <Pressable
             style={styles.itemFavBtn}
             hitSlop={10}
@@ -35,14 +39,14 @@ export const MenuItemCard = memo(({
           >
             <Heart
               size={14}
-              color={isFavorite ? '#FF3D3D' : '#111'}
-              fill={isFavorite ? '#FF3D3D' : 'transparent'}
+              color={isFavorite ? COLORS.accent : COLORS.textDark}
+              fill={isFavorite ? COLORS.accent : 'transparent'}
             />
           </Pressable>
         </View>
 
         <View style={styles.itemContent}>
-          <Text style={styles.itemPrice}>₹{item.price}</Text>
+          <Text style={styles.itemPrice}>₹{item.price || item.basePrice || 199}</Text>
           <Text style={styles.itemName} numberOfLines={1}>
             {item.name}
           </Text>
@@ -58,9 +62,8 @@ export const MenuItemCard = memo(({
           )}
 
           {item.isBestSeller && (
-            <Text style={styles.bestSeller}>Highly Reordered</Text>
+            <Text style={styles.bestSeller}>★ Highly Reordered</Text>
           )}
-
         </View>
 
         <View style={styles.actionWrap}>
@@ -71,7 +74,7 @@ export const MenuItemCard = memo(({
                 hitSlop={10}
                 onPress={onDecrement}
               >
-                <Minus size={12} color="#111" />
+                <Minus size={12} color={COLORS.primary} />
               </Pressable>
               <Text style={styles.stepQty}>{quantity}</Text>
               <Pressable
@@ -79,7 +82,7 @@ export const MenuItemCard = memo(({
                 hitSlop={10}
                 onPress={onIncrement}
               >
-                <Plus size={12} color="#111" />
+                <Plus size={12} color={COLORS.primary} />
               </Pressable>
             </View>
           ) : (
@@ -88,7 +91,7 @@ export const MenuItemCard = memo(({
               hitSlop={10}
               onPress={onQuickAdd}
             >
-              <Plus size={14} color="#111" />
+              <Plus size={14} color="#FFFFFF" />
             </Pressable>
           )}
         </View>
@@ -104,12 +107,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
     alignItems: 'center',
+    backgroundColor: '#FFFFFF',
   },
   itemDivider: {
     height: 1,
-    backgroundColor: '#EDEDED',
+    backgroundColor: COLORS.borderLight,
     marginHorizontal: SPACING.md,
-    marginVertical: SPACING.sm,
+    marginVertical: SPACING.xs,
   },
   itemImgWrap: {
     position: 'relative',
@@ -129,9 +133,10 @@ const styles = StyleSheet.create({
     borderColor: '#F0F0F0',
   },
   itemImg: {
-    width: scale(64),
-    height: scale(64),
+    width: scale(68),
+    height: scale(68),
     borderRadius: scale(12),
+    backgroundColor: '#F0F0F0',
   },
   itemContent: {
     flex: 1,
@@ -145,70 +150,68 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: FONT_SIZES.sm,
     fontWeight: '700',
-    color: '#111',
+    color: COLORS.textDark,
     flex: 1,
   },
   itemPrice: {
     fontSize: FONT_SIZES.sm,
     fontWeight: '800',
-    color: '#111',
+    color: COLORS.primary,
     marginBottom: scale(2),
   },
   itemSubtitle: {
     marginTop: scale(1),
     fontSize: FONT_SIZES.xs,
-    color: '#222',
+    color: COLORS.textSecondary,
     fontWeight: '600',
   },
   desc: {
     fontSize: FONT_SIZES.xs,
-    color: '#777',
+    color: COLORS.textMuted,
     marginTop: scale(2),
   },
   bestSeller: {
-    color: '#D84C4C',
-    fontSize: FONT_SIZES.xs,
+    color: COLORS.accentDark,
+    fontSize: FONT_SIZES.xs - 1,
     marginTop: SPACING.xs,
     fontWeight: '700',
-    backgroundColor: '#FFE8E8',
+    backgroundColor: COLORS.accentLight,
     paddingHorizontal: SPACING.sm,
-    paddingVertical: scale(3),
-    borderRadius: scale(10),
+    paddingVertical: scale(2),
+    borderRadius: scale(8),
     alignSelf: 'flex-start',
   },
   addPlusBtn: {
-    width: scale(24),
-    height: scale(24),
-    borderRadius: scale(5),
-    backgroundColor: '#E6E6E6',
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
+    width: scale(28),
+    height: scale(28),
+    borderRadius: scale(14),
+    backgroundColor: COLORS.primary,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 1,
+    elevation: 2,
   },
   stepper: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#E8E8E8',
-    borderRadius: scale(12),
-    paddingHorizontal: SPACING.sm,
-    height: scale(24),
+    borderWidth: 1.5,
+    borderColor: COLORS.primary,
+    borderRadius: scale(14),
+    paddingHorizontal: SPACING.xs,
+    height: scale(28),
     backgroundColor: '#FFF',
   },
   stepBtn: {
-    width: scale(22),
-    height: scale(22),
-    borderRadius: scale(11),
+    width: scale(24),
+    height: scale(24),
+    borderRadius: scale(12),
     justifyContent: 'center',
     alignItems: 'center',
   },
   stepQty: {
     minWidth: scale(16),
     textAlign: 'center',
-    fontWeight: '900',
-    color: '#111',
+    fontWeight: '800',
+    color: COLORS.textDark,
     fontSize: FONT_SIZES.xs,
     marginHorizontal: scale(2),
   },

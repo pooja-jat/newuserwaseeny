@@ -21,6 +21,7 @@ import apiClient from '../../config/apiClient';
 import { USER_ROUTES } from '../../config/routes';
 import { verifyProfileOtp, resendProfileOtp } from '../../services/userService';
 import OTPVerificationModal from '../../components/OTPVerificationModal';
+import { COLORS } from '../../theme/colors';
 
 const ProfileScreen = () => {
 
@@ -281,7 +282,7 @@ const ProfileScreen = () => {
 
           {isLoadingProfile ? (
             <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#ed1c24" />
+              <ActivityIndicator size="large" color={COLORS.primary} />
               <Text style={styles.loadingText}>Loading profile...</Text>
             </View>
           ) : (
@@ -489,7 +490,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#ed1c24',
+    backgroundColor: COLORS.primary,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 3,
@@ -502,7 +503,7 @@ const styles = StyleSheet.create({
   },
   changePhotoText: {
     fontSize: 14,
-    color: '#ed1c24',
+    color: COLORS.primary,
     fontWeight: '600',
   },
   form: {
@@ -532,8 +533,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   languageButtonActive: {
-    backgroundColor: '#ed1c24',
-    borderColor: '#ed1c24',
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
   },
   languageButtonText: {
     fontSize: 14,
@@ -546,7 +547,7 @@ const styles = StyleSheet.create({
   },
   updateButton: {
     height: 50,
-    backgroundColor: '#ed1c24',
+    backgroundColor: COLORS.primary,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',

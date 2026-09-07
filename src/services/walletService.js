@@ -1,51 +1,90 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import apiClient from '../config/apiClient';
 import { WALLET_ROUTES } from '../config/routes';
 
-/**
- * Fetch wallet data including balance and transactions
- * @returns {Promise} Wallet data with balance and transactions
- */
+const LOCAL_WALLET_KEY = 'ecdkart_wallet_balance_v1';
+
+const MOCK_WALLET = {
+  balance: 1250,
+  walletBalance: 1250,
+  currency: '₹',
+  transactions: [
+    {
+      id: 'tx_1',
+      _id: 'tx_1',
+      type: 'CREDIT',
+      amount: 500,
+      title: 'Cashback Added',
+      description: 'Order cashback for ECD-2026-8921',
+      date: '2026-09-06T19:35:00.000Z',
+    },
+    {
+      id: 'tx_2',
+      _id: 'tx_2',
+      type: 'DEBIT',
+      amount: 250,
+      title: 'Paid for Order',
+      description: 'Used for order payment',
+      date: '2026-09-05T12:20:00.000Z',
+    },
+    {
+      id: 'tx_3',
+      _id: 'tx_3',
+      type: 'CREDIT',
+      amount: 1000,
+      title: 'Wallet Top-up',
+      description: 'Added via UPI',
+      date: '2026-09-01T08:00:00.000Z',
+    },
+  ],
+};
+
 export const getWallet = async () => {
   try {
-    const response = await apiClient.get(WALLET_ROUTES.getWallet);
-    return response?.data ?? {};
+    const localRaw = await AsyncStorage.getItem(LOCAL_WALLET_KEY);
+    const balance = localRaw !== null ? Number(localRaw) : MOCK_WALLET.balance;
+
+    try {
+      const response = await apiClient.get(WALLET_ROUTES.getWallet);
+      if (response?.data?.balance !== undefined) {
+        return response.data;
+      }
+    } catch (e) {}
+
+    return {
+      ...MOCK_WALLET,
+      balance,
+      walletBalance: balance,
+    };
   } catch (error) {
-    console.error('Error fetching wallet data:', error);
-    throw error;
+    return MOCK_WALLET;
   }
 };
 
-/**
- * Fetch wallet balance only
- * @returns {Promise} Wallet balance data
- */
 export const getWalletBalance = async () => {
   try {
-    const response = await apiClient.get(WALLET_ROUTES.getBalance);
-    return response?.data ?? { balance: 0 };
+    const localRaw = await AsyncStorage.getItem(LOCAL_WALLET_KEY);
+    if (localRaw !== null) {
+      return { balance: Number(localRaw) };
+    }
+    const data = await getWallet();
+    return { balance: data.balance || 1250 };
   } catch (error) {
-    console.error('Error fetching wallet balance:', error);
-    throw error;
+    return { balance: 1250 };
   }
 };
 
-/**
- * Fetch wallet transactions
- * @param {Object} params Query parameters (limit, offset, etc.)
- * @returns {Promise} Transactions array
- */
 export const getWalletTransactions = async (params = {}) => {
   try {
-    const response = await apiClient.get(WALLET_ROUTES.getTransactions, {
-      params: {
-        limit: params.limit ?? 50,
-        offset: params.offset ?? 0,
-        ...params,
-      },
-    });
-    return response?.data ?? { transactions: [] };
+    const data = await getWallet();
+    return { transactions: data.transactions || [] };
   } catch (error) {
-    console.error('Error fetching wallet transactions:', error);
-    throw error;
+    return { transactions: MOCK_WALLET.transactions };
   }
+};
+
+export default {
+  getWallet,
+  getWalletBalance,
+  getWalletTransactions,
 };

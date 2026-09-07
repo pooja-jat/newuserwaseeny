@@ -17,6 +17,7 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { ArrowLeft, Send } from 'lucide-react-native';
 import { FONT_SIZES } from '../../theme/typography';
 import { SPACING } from '../../theme/spacing';
+import { COLORS } from '../../theme/colors';
 
 export default function ContactSupport() {
   const navigation = useNavigation();
@@ -189,7 +190,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   rightBubble: {
-    backgroundColor: '#E41C26',
+    backgroundColor: COLORS.primary,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm + 2,
     borderRadius: 16,
@@ -239,7 +240,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#E41C26',
+    backgroundColor: COLORS.primary,
   },
   sendDisabled: {
     opacity: 0.45,

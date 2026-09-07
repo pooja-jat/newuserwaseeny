@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ChevronLeft, Search } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CouponDetailsDrawer from '../../components/CouponDetailsDrawer';
+import { COLORS } from '../../theme/colors';
 
 const COUPONS = [
   {
@@ -129,7 +130,7 @@ export default function Coupons() {
                 <Pressable
                   style={styles.useBtn}
                   onPress={() => handleUseNow(item)}
-                  android_ripple={{ color: '#FF4444', borderless: false }}
+                  android_ripple={{ color: COLORS.primaryLight, borderless: false }}
                 >
                   <Text style={styles.useBtnText}>Use Now</Text>
                 </Pressable>
@@ -236,7 +237,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.6,
   },
   useBtn: {
-    backgroundColor: '#E53935',
+    backgroundColor: COLORS.primary,
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 8,

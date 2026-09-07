@@ -11,6 +11,7 @@ import {
   BackHandler,
 } from 'react-native';
 import { X } from 'lucide-react-native';
+import { COLORS } from '../theme/colors';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -265,7 +266,7 @@ const styles = StyleSheet.create({
     borderTopColor: '#F0F0F0',
   },
   useNowBtn: {
-    backgroundColor: '#E53935',
+    backgroundColor: COLORS.primary,
     height: 52,
     borderRadius: 12,
     alignItems: 'center',

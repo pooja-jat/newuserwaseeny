@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Trash2, X } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { COLORS } from '../../theme/colors';
 
 const DeleteAccountPopUp = ({ visible, onClose, onDelete }) => {
   const navigation = useNavigation();
@@ -39,7 +40,7 @@ const DeleteAccountPopUp = ({ visible, onClose, onDelete }) => {
           <View style={styles.row}>
             {/* Icon */}
             <View style={styles.iconCircle}>
-              <Trash2 size={22} color={"#E41C26"} />
+              <Trash2 size={22} color={COLORS.error} />
             </View>
             <View style={styles.textContainer}>
               {/* Title */}
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
 
   icon: {
     fontSize: 22,
-    color: '#E41C26',
+    color: COLORS.error,
   },
 
   title: {
@@ -164,7 +165,7 @@ const styles = StyleSheet.create({
 
   deleteBtn: {
     flex: 1,
-    backgroundColor: '#E41C26',
+    backgroundColor: COLORS.error,
     borderRadius: 10,
     paddingVertical: 10,
     marginLeft: 8,

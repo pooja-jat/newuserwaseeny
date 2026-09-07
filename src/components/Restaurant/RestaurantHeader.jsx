@@ -36,8 +36,8 @@ export const RestaurantHeader = memo(({
         <Pressable style={styles.headerIcon} onPress={onFavoritePress}>
           <Heart
             size={18}
-            color={isFavorite ? '#FF3D3D' : '#000'}
-            fill={isFavorite ? '#FF3D3D' : 'transparent'}
+            color={isFavorite ? '#E89D1E' : '#000'}
+            fill={isFavorite ? '#E89D1E' : 'transparent'}
           />
         </Pressable>
       </View>

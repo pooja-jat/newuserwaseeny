@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { CheckCircle, XCircle } from 'lucide-react-native';
 import Sound from 'react-native-sound';
+import { COLORS } from '../theme/colors';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 const SUCCESS_SOUND_SOURCES = [
@@ -177,9 +178,9 @@ export default function OrderConfirmedModal({
           <View style={styles.content}>
             <View style={[styles.celebrateWrap, isFailed && styles.errorWrap]}>
               {isSuccess ? (
-                <CheckCircle size={38} color="#FF3D3D" strokeWidth={2.4} />
+                <CheckCircle size={38} color={COLORS.primary} strokeWidth={2.4} />
               ) : (
-                <XCircle size={38} color="#FF3D3D" strokeWidth={2.4} />
+                <XCircle size={38} color={COLORS.error} strokeWidth={2.4} />
               )}
             </View>
 
@@ -221,27 +222,15 @@ export default function OrderConfirmedModal({
                   </Pressable>
                 </>
               ) : (
-                <>
-                  <Pressable
-                    onPress={onViewDetails}
-                    style={({ pressed }) => [
-                      styles.primaryBtn,
-                      pressed && styles.btnPressed,
-                    ]}
-                  >
-                    <Text style={styles.primaryText}>Try Again</Text>
-                  </Pressable>
-
-                  <Pressable
-                    onPress={onExploreMenu}
-                    style={({ pressed }) => [
-                      styles.secondaryBtn,
-                      pressed && styles.btnPressed,
-                    ]}
-                  >
-                    <Text style={styles.secondaryText}>Go Back</Text>
-                  </Pressable>
-                </>
+                <Pressable
+                  onPress={onClose}
+                  style={({ pressed }) => [
+                    styles.primaryBtn,
+                    pressed && styles.btnPressed,
+                  ]}
+                >
+                  <Text style={styles.primaryText}>Close</Text>
+                </Pressable>
               )}
             </View>
           </View>
@@ -252,50 +241,51 @@ export default function OrderConfirmedModal({
 }
 
 const styles = StyleSheet.create({
-  modalRoot: {
+  backdrop: {
     flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.45)',
     justifyContent: 'flex-end',
   },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.45)',
+  backdropTouchable: {
+    flex: 1,
   },
   sheet: {
-    height: SCREEN_HEIGHT * 0.62,
-    backgroundColor: '#FFF',
-    borderTopLeftRadius: 26,
-    borderTopRightRadius: 26,
-    paddingBottom: Platform.OS === 'ios' ? 20 : 10,
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    paddingHorizontal: 22,
+    paddingTop: 28,
+    paddingBottom: Platform.OS === 'ios' ? 40 : 28,
   },
   content: {
-    flex: 1,
     alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingTop: 34,
   },
   celebrateWrap: {
-    width: 88,
-    height: 88,
-    borderRadius: 44,
-    backgroundColor: '#FFF1F1',
+    width: 68,
+    height: 68,
+    borderRadius: 34,
+    backgroundColor: COLORS.primaryLight,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 16,
   },
   errorWrap: {
-    backgroundColor: '#FFE5E5',
+    backgroundColor: '#FFEBEE',
   },
   title: {
     fontSize: 20,
     fontWeight: '900',
     color: '#111',
+    textAlign: 'center',
   },
   subtitle: {
     marginTop: 8,
-    textAlign: 'center',
     fontSize: 13,
+    lineHeight: 18,
     color: '#666',
-    lineHeight: 20,
+    textAlign: 'center',
+    paddingHorizontal: 8,
+    fontWeight: '600',
   },
   badge: {
     marginTop: 18,
@@ -312,14 +302,13 @@ const styles = StyleSheet.create({
   badgeLabel: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#FF3D3D',
+    color: COLORS.primary,
     marginRight:4
   },
   badgeValue: {
-    // marginTop: 4,
     fontSize: 12,
     fontWeight: '900',
-    color: '#FF3D3D',
+    color: COLORS.primary,
   },
   buttonStack: {
     width: '100%',
@@ -328,7 +317,7 @@ const styles = StyleSheet.create({
   primaryBtn: {
     height: 52,
     borderRadius: 16,
-    backgroundColor: '#FF3D3D',
+    backgroundColor: COLORS.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -341,13 +330,13 @@ const styles = StyleSheet.create({
     height: 52,
     borderRadius: 16,
     borderWidth: 1.5,
-    borderColor: '#FF3D3D',
+    borderColor: COLORS.primary,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 12,
   },
   secondaryText: {
-    color: '#FF3D3D',
+    color: COLORS.primary,
     fontWeight: '900',
     fontSize: 14,
   },

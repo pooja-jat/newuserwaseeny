@@ -12,6 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { CommonActions } from '@react-navigation/native';
+import { COLORS } from '../../theme/colors';
 
 const { width, height } = Dimensions.get('window');
 
@@ -61,7 +62,7 @@ export default function AccountDeletedScreen() {
             // Loading State
             <>
               <View style={styles.loaderContainer}>
-                <ActivityIndicator size="large" color="#E41C26" />
+                <ActivityIndicator size="large" color={COLORS.error} />
               </View>
               <Text style={styles.loadingTitle}>Deleting Account...</Text>
               <Text style={styles.loadingSubtitle}>Please wait while we process your request</Text>

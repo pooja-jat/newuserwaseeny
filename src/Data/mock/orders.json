@@ -1,81 +1,202 @@
 [
   {
     "_id": "ord_101",
+    "id": "ord_101",
     "orderNumber": "ECD-2026-8921",
     "status": "DELIVERED",
-    "createdAt": "2026-09-04T19:30:00.000Z",
+    "createdAt": "2026-09-06T19:30:00.000Z",
     "restaurant": {
       "id": "r1",
+      "_id": "r1",
       "name": "The Food Haven",
       "logo": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500",
-      "address": "124 Food Street, City Center"
+      "address": "124 Food Street, City Center",
+      "phone": "+91 98765 11223"
     },
     "items": [
       {
+        "id": "m1_r1",
         "name": "Crispy Cheese Burger",
         "quantity": 2,
-        "price": 199
+        "qty": 2,
+        "price": 199,
+        "image": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400"
       },
       {
+        "id": "m3_r1",
         "name": "Loaded French Fries Basket",
         "quantity": 1,
-        "price": 129
+        "qty": 1,
+        "price": 129,
+        "image": "https://images.unsplash.com/photo-1576107232684-1279f3908594?w=400"
       }
     ],
+    "itemTotal": 527,
     "totalAmount": 527,
     "deliveryFee": 0,
+    "tax": 26,
+    "platformFee": 5,
+    "packaging": 15,
     "discount": 50,
-    "paymentMethod": "UPI (Google Pay)"
+    "paymentMethod": "UPI (Google Pay)",
+    "deliveryAddress": {
+      "label": "Home",
+      "addressLine": "123 Main Street, Apartment 4B, City Center",
+      "city": "City Center"
+    },
+    "rider": {
+      "name": "Rahul Sharma",
+      "phone": "+91 98936 78524"
+    }
   },
   {
     "_id": "ord_102",
-    "orderNumber": "ECD-2026-8940",
+    "id": "ord_102",
+    "orderNumber": "ECD-2026-9042",
     "status": "PREPARING",
-    "createdAt": "2026-09-05T09:45:00.000Z",
+    "createdAt": "2026-09-07T10:15:00.000Z",
     "restaurant": {
       "id": "r3",
+      "_id": "r3",
       "name": "Royal Biryani House",
       "logo": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500",
-      "address": "78 Old Fort Lane, Heritage Market"
+      "address": "78 Old Fort Lane, Heritage Market",
+      "phone": "+91 98765 22334"
     },
     "items": [
       {
+        "id": "m1_r3",
         "name": "Hyderabadi Chicken Dum Biryani",
         "quantity": 1,
-        "price": 320
+        "qty": 1,
+        "price": 320,
+        "image": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400"
+      },
+      {
+        "id": "m3_r3",
+        "name": "Fresh Mint Raita Bowl",
+        "quantity": 1,
+        "qty": 1,
+        "price": 49,
+        "image": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400"
       }
     ],
-    "totalAmount": 350,
+    "itemTotal": 369,
+    "totalAmount": 399,
     "deliveryFee": 30,
-    "discount": 0,
-    "paymentMethod": "Cash on Delivery"
+    "tax": 18,
+    "platformFee": 5,
+    "packaging": 15,
+    "discount": 38,
+    "paymentMethod": "Cash on Delivery",
+    "deliveryAddress": {
+      "label": "Home",
+      "addressLine": "123 Main Street, Apartment 4B, City Center",
+      "city": "City Center"
+    },
+    "rider": {
+      "name": "Vikram Singh",
+      "phone": "+91 98711 22334"
+    }
   },
   {
     "_id": "ord_103",
-    "orderNumber": "ECD-2026-7812",
-    "status": "DELIVERED",
-    "createdAt": "2026-09-02T14:15:00.000Z",
+    "id": "ord_103",
+    "orderNumber": "ECD-2026-9055",
+    "status": "OUT_FOR_DELIVERY",
+    "createdAt": "2026-09-07T10:45:00.000Z",
     "restaurant": {
-      "id": "r6",
-      "name": "Sweet Tooth Desserts",
-      "logo": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=500",
-      "address": "14 Baker Street, Central Plaza"
+      "id": "r2",
+      "_id": "r2",
+      "name": "Burger Club",
+      "logo": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=500",
+      "address": "45 Midtown Galleria, Ground Floor",
+      "phone": "+91 98765 33445"
     },
     "items": [
       {
-        "name": "Warm Molten Lava Cake",
-        "quantity": 2,
-        "price": 140
+        "id": "m1_r2",
+        "name": "Double Patty Smash Burger",
+        "quantity": 1,
+        "qty": 1,
+        "price": 249,
+        "image": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400"
       },
       {
-        "name": "New York Cheesecake Slice",
+        "id": "m3_r2",
+        "name": "Thick Belgian Chocolate Shake",
         "quantity": 1,
-        "price": 190
+        "qty": 1,
+        "price": 149,
+        "image": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400"
       }
     ],
+    "itemTotal": 398,
+    "totalAmount": 428,
+    "deliveryFee": 30,
+    "tax": 20,
+    "platformFee": 5,
+    "packaging": 15,
+    "discount": 40,
+    "paymentMethod": "UPI (PhonePe)",
+    "deliveryAddress": {
+      "label": "Home",
+      "addressLine": "123 Main Street, Apartment 4B, City Center",
+      "city": "City Center"
+    },
+    "rider": {
+      "name": "Amit Kumar",
+      "phone": "+91 98223 44556"
+    }
+  },
+  {
+    "_id": "ord_104",
+    "id": "ord_104",
+    "orderNumber": "ECD-2026-7812",
+    "status": "DELIVERED",
+    "createdAt": "2026-09-05T14:15:00.000Z",
+    "restaurant": {
+      "id": "r6",
+      "_id": "r6",
+      "name": "Sweet Tooth Desserts",
+      "logo": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=500",
+      "address": "14 Baker Street, Central Plaza",
+      "phone": "+91 98765 55667"
+    },
+    "items": [
+      {
+        "id": "m1_r6",
+        "name": "Warm Molten Lava Cake",
+        "quantity": 2,
+        "qty": 2,
+        "price": 140,
+        "image": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400"
+      },
+      {
+        "id": "m2_r6",
+        "name": "New York Cheesecake Slice",
+        "quantity": 1,
+        "qty": 1,
+        "price": 190,
+        "image": "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=400"
+      }
+    ],
+    "itemTotal": 470,
     "totalAmount": 470,
     "deliveryFee": 0,
-    "discount": 40,
-    "paymentMethod": "Credit Card"
+    "tax": 24,
+    "platformFee": 5,
+    "packaging": 15,
+    "discount": 44,
+    "paymentMethod": "Credit Card",
+    "deliveryAddress": {
+      "label": "Work",
+      "addressLine": "Tech Park, Building 2, Floor 5, Cyber City",
+      "city": "Cyber City"
+    },
+    "rider": {
+      "name": "Deepak Verma",
+      "phone": "+91 98334 55667"
+    }
   }
 ]

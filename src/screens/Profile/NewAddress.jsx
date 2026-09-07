@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { COLORS } from '../../theme/colors';
 
 const AddNewAddressScreen = () => {
   const navigation = useNavigation();
@@ -226,7 +227,7 @@ const styles = StyleSheet.create({
   /* Button */
   button: {
     height: 52,
-    backgroundColor: '#EF1C25',
+    backgroundColor: COLORS.primary,
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',

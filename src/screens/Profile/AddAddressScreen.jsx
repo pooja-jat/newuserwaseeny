@@ -12,6 +12,7 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { ArrowLeft } from 'lucide-react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import useHideTabBar from '../../utils/hooks/useHideTabBar';
+import { COLORS } from '../../theme/colors';
 
 const { width, height } = Dimensions.get('window');
 
@@ -297,7 +298,7 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 6,
-    backgroundColor: '#E41C26',
+    backgroundColor: COLORS.primary,
     marginRight: width * 0.03,
     marginTop: 2,
     flexShrink: 0,
@@ -314,12 +315,12 @@ const styles = StyleSheet.create({
   btn: {
     height: height * 0.065,
     minHeight: 50,
-    backgroundColor: '#E41C26',
+    backgroundColor: COLORS.primary,
     borderRadius: 14,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 3,
-    shadowColor: '#E41C26',
+    shadowColor: COLORS.primary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,

@@ -12,6 +12,8 @@ import {
   ScrollView,
 } from 'react-native';
 
+import { COLORS } from '../theme/colors';
+
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 function buildDateOptions() {
@@ -400,7 +402,7 @@ const styles = StyleSheet.create({
   tabTextActive: { color: '#111' },
   tabUnderline: {
     height: 2,
-    backgroundColor: '#FF3D3D',
+    backgroundColor: COLORS.primary,
     width: '70%',
     marginTop: 8,
     borderRadius: 2,
@@ -429,7 +431,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   selectRowActive: {
-    borderColor: '#FF3D3D',
+    borderColor: COLORS.primary,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
   },
@@ -450,7 +452,7 @@ const styles = StyleSheet.create({
   dropdown: {
     backgroundColor: '#FFF',
     borderWidth: 1,
-    borderColor: '#FF3D3D',
+    borderColor: COLORS.primary,
     borderTopWidth: 0,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
@@ -475,7 +477,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#F5F5F5',
   },
   dropdownItemActive: {
-    backgroundColor: '#FFF5F5',
+    backgroundColor: COLORS.primaryLight,
   },
   dropdownItemText: {
     fontSize: 12,
@@ -483,12 +485,12 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   dropdownItemTextActive: {
-    color: '#FF3D3D',
+    color: COLORS.primary,
     fontWeight: '700',
   },
   checkmark: {
     fontSize: 14,
-    color: '#FF3D3D',
+    color: COLORS.primary,
     fontWeight: 'bold',
   },
 
@@ -500,7 +502,7 @@ const styles = StyleSheet.create({
   primaryBtn: {
     height: 52,
     borderRadius: 16,
-    backgroundColor: '#FF3D3D',
+    backgroundColor: COLORS.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },

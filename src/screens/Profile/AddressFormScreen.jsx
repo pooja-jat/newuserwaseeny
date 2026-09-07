@@ -18,6 +18,7 @@ import Toast from 'react-native-toast-message';
 import useHideTabBar from '../../utils/hooks/useHideTabBar';
 import apiClient from '../../config/apiClient';
 import { USER_ROUTES } from '../../config/routes';
+import { COLORS } from '../../theme/colors';
 
 const { width, height } = Dimensions.get('window');
 
@@ -199,7 +200,7 @@ export default function AddressFormScreen() {
             {/* Location Display */}
             <View style={styles.locationBox}>
               <View style={styles.locationHeader}>
-                <MapPin size={18} color="#E41C26" strokeWidth={2.5} />
+                <MapPin size={18} color={COLORS.primary} strokeWidth={2.5} />
                 <Text style={styles.locationBoxTitle}>Selected Location</Text>
               </View>
               <Text style={styles.locationText}>{getAddressDisplay()}</Text>
@@ -417,7 +418,7 @@ const styles = StyleSheet.create({
   locationBoxTitle: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#E41C26',
+    color: COLORS.primary,
     marginLeft: 8,
   },
   locationText: {
@@ -441,10 +442,10 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   inputError: {
-    borderColor: '#E41C26',
+    borderColor: COLORS.error,
   },
   errorText: {
-    color: '#E41C26',
+    color: COLORS.error,
     fontSize: 12,
     fontWeight: '500',
     marginTop: 6,
@@ -465,8 +466,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   tagActive: {
-    backgroundColor: '#E41C26',
-    borderColor: '#E41C26',
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
   },
   tagText: {
     fontSize: 13,
@@ -494,8 +495,8 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   checkboxActive: {
-    borderColor: '#E41C26',
-    backgroundColor: '#E41C26',
+    borderColor: COLORS.primary,
+    backgroundColor: COLORS.primary,
   },
   checkmark: {
     color: '#fff',
@@ -516,19 +517,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   addButton: {
-    backgroundColor: '#E41C26',
+    backgroundColor: COLORS.primary,
     borderRadius: 12,
     paddingVertical: height * 0.017,
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 3,
-    shadowColor: '#E41C26',
+    shadowColor: COLORS.primary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
   },
   addButtonDisabled: {
-    backgroundColor: '#cc1a22',
+    backgroundColor: COLORS.primaryDark,
     opacity: 0.8,
   },
   addButtonText: {

@@ -58,22 +58,18 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
-    // Log detailed error information for debugging
     const isNetworkError = !error?.response;
     const status = error?.response?.status;
     const url = error?.config?.url;
     const method = error?.config?.method;
 
-    console.error('API Error Details:', {
+    console.warn('[API Log]', {
       status,
       url,
       method,
       message: error?.message,
-      responseData: error?.response?.data,
-      isNetworkError,
-      baseURL: error?.config?.baseURL,
-      timeout: error?.config?.timeout,
     });
+
 
     // Handle 401 Unauthorized errors
     if (status === 401) {

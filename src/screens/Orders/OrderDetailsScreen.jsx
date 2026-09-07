@@ -20,12 +20,14 @@ import LinearGradient from 'react-native-linear-gradient';
 import apiClient from '../../config/apiClient';
 import { ORDER_ROUTES } from '../../config/routes';
 import { toNumber } from '../../services/cartPricing';
+import { getOrderById } from '../../services/orderService';
 import { RefreshableWrapper } from '../../components/RefreshableWrapper';
 import OrderRatingModule from '../../components/Rating/OrderRatingModule';
 import { wp, hp } from '../../utils/responsive';
 import { scale } from '../../utils/scale';
 import { FONT_SIZES } from '../../theme/typography';
 import { SPACING } from '../../theme/spacing';
+import { COLORS } from '../../theme/colors';
 import { useOrderRealtime } from '../../hooks/useOrderRealtime';
 import { AuthContext } from '../../context/AuthContext';
 
@@ -234,16 +236,14 @@ export default function OrderDetailsScreen() {
       }
       setOrder(normalizedOrder);
     } catch (error) {
-      console.error('[OrderDetailsScreen] ❌ Error fetching order:', error?.response?.data || error?.message || error);
-      setOrder(null);
+      console.warn('[OrderDetailsScreen] Using local mock fallback for orderId:', orderId);
+      const fallbackOrder = await getOrderById(orderId);
+      setOrder(fallbackOrder);
     }
   }, [orderData, orderId]);
 
   useEffect(() => {
-    if (!orderId || !isAuthenticated) {
-      if (!isAuthenticated) {
-        console.log('[OrderDetailsScreen] 🔒 Not authenticated, skipping order fetch');
-      }
+    if (!orderId) {
       setLoading(false);
       return;
     }
@@ -255,7 +255,7 @@ export default function OrderDetailsScreen() {
     };
 
     loadOrder();
-  }, [fetchOrder, orderId, isAuthenticated]);
+  }, [fetchOrder, orderId]);
 
   const appendTimelineEvent = (prevOrder, status, message) => {
     const currentTimeline = Array.isArray(prevOrder?.timeline) ? prevOrder.timeline : [];

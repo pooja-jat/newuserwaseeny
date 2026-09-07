@@ -11,6 +11,8 @@ import {
   BackHandler,
 } from 'react-native';
 
+import { COLORS } from '../theme/colors';
+
 const { width, height } = Dimensions.get('window');
 
 export const ConflictModal = ({
@@ -166,7 +168,7 @@ const styles = StyleSheet.create({
     color: 'white',
     paddingVertical: 16,
     paddingHorizontal: 20,
-    backgroundColor: '#FF3D3D',
+    backgroundColor: COLORS.primary,
     width: '100%',
     textAlign: 'center',
     borderTopLeftRadius: 16,
@@ -217,7 +219,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   btnPrimary: {
-    backgroundColor: '#FF3D3D',
+    backgroundColor: COLORS.primary,
   },
   btnPrimaryText: {
     fontSize: 14,

@@ -15,6 +15,7 @@ import { FavouritesContext } from '../context/FavouritesContext';
 import { CartContext } from '../context/CartContext';
 import { toNumber } from '../services/cartPricing';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { COLORS } from '../theme/colors';
 
 const FALLBACK_IMG = require('../assets/images/Noodle.png');
 
@@ -67,7 +68,7 @@ const RestaurantCard = memo(({
         style={styles.heartBtn}
         onPress={handleHeartPress}
       >
-        <Heart size={20} color="#FF3D3D" fill="#FF3D3D" />
+        <Heart size={20} color={COLORS.accent} fill={COLORS.accent} />
       </TouchableOpacity>
     </TouchableOpacity>
   );
@@ -101,7 +102,7 @@ const ItemCard = memo(({
               style={styles.qtyBtnOverlay}
               activeOpacity={0.8}
             >
-              <Minus size={14} color="#E53935" />
+              <Minus size={14} color={COLORS.primary} />
             </TouchableOpacity>
 
             <Text style={styles.qtyTextOverlay}>{cartQty}</Text>
@@ -111,7 +112,7 @@ const ItemCard = memo(({
               style={styles.qtyBtnOverlay}
               activeOpacity={0.8}
             >
-              <Plus size={14} color="#E53935" />
+              <Plus size={14} color={COLORS.primary} />
             </TouchableOpacity>
           </View>
         </View>
@@ -145,7 +146,7 @@ const ItemCard = memo(({
             style={styles.heartBtnSmall}
             onPress={onToggleFavourite}
           >
-            <Heart size={18} color="#FF3D3D" fill="#FF3D3D" />
+            <Heart size={18} color={COLORS.accent} fill={COLORS.accent} />
           </TouchableOpacity>
         </View>
       </View>
@@ -586,13 +587,13 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 14,
-    backgroundColor: 'rgba(255,61,61,0.1)',
+    backgroundColor: COLORS.accentLight,
     alignItems: 'center',
     justifyContent: 'center',
   },
 
   group: { marginBottom: 18 },
-  groupTitle: { color: '#777', fontWeight: '800', marginBottom: 10 },
+  groupTitle: { color: COLORS.textMuted, fontWeight: '800', marginBottom: 10 },
 
   itemCard: {
     flexDirection: 'row',
@@ -625,7 +626,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderRadius: 6,
     borderWidth: 1,
-    borderColor: '#FF6B6B',
+    borderColor: COLORS.primary,
     paddingHorizontal: 4,
     paddingVertical: 2,
   },
@@ -633,7 +634,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 6,
-    backgroundColor: '#FFECEC',
+    backgroundColor: COLORS.primaryLight,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -641,28 +642,28 @@ const styles = StyleSheet.create({
     minWidth: 24,
     textAlign: 'center',
     fontWeight: '900',
-    color: '#E53935',
+    color: COLORS.primary,
     fontSize: 12,
   },
-  itemName: { fontWeight: '900', color: '#111', fontSize: 14 },
-  itemDesc: { marginTop: 4, color: '#777', fontWeight: '600', fontSize: 12 },
+  itemName: { fontWeight: '900', color: COLORS.textDark, fontSize: 14 },
+  itemDesc: { marginTop: 4, color: COLORS.textMuted, fontWeight: '600', fontSize: 12 },
   itemBottomRow: {
     marginTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
   },
-  itemPrice: { flex: 1, fontWeight: '900', color: '#111', fontSize: 14 },
+  itemPrice: { flex: 1, fontWeight: '900', color: COLORS.primary, fontSize: 14 },
   addBtnSmall: {
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 10,
-    backgroundColor: 'rgba(255,61,61,0.10)',
+    backgroundColor: COLORS.primaryLight,
     alignItems: 'center',
     justifyContent: 'center',
   },
   addBtnSmallText: { 
-    color: '#FF3D3D', 
+    color: COLORS.primary, 
     fontWeight: '900', 
     fontSize: 12 
   },
@@ -670,7 +671,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 10,
-    backgroundColor: 'rgba(255,61,61,0.1)',
+    backgroundColor: COLORS.accentLight,
     alignItems: 'center',
     justifyContent: 'center',
   },

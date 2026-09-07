@@ -3,14 +3,12 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   FlatList,
   ScrollView,
   TouchableOpacity,
   Image,
   Pressable,
   ActivityIndicator,
-  Dimensions,
   RefreshControl,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -18,32 +16,21 @@ import { ChevronRight } from 'lucide-react-native';
 
 import { CartContext } from '../../context/CartContext';
 import { useNavigation } from '@react-navigation/native';
-import { wp, hp } from '../../utils/responsive';
+import { wp } from '../../utils/responsive';
 import { scale } from '../../utils/scale';
 import { FONT_SIZES } from '../../theme/typography';
 import { SPACING } from '../../theme/spacing';
 import { COLORS } from '../../theme/colors';
 
-
 const FALLBACK_ITEM_IMAGE = require('../../assets/images/Noodle.png');
 
 function formatOrderDateTime(isoString) {
   const date = isoString ? new Date(isoString) : new Date();
-  if (Number.isNaN(date.getTime())) return { dateLine1: '', dateLine2: '' };
+  if (Number.isNaN(date.getTime())) return { dateLine1: 'Recently placed', dateLine2: '' };
 
   const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
   ];
 
   const day = date.getDate();
@@ -55,53 +42,62 @@ function formatOrderDateTime(isoString) {
   const hours12 = ((hours24 + 11) % 12) + 1;
 
   return {
-    dateLine1: `Order placed on ${day}, ${month},`,
-    dateLine2: `${hours12}:${minutes}${ampm}`,
+    dateLine1: `Order placed on ${day} ${month},`,
+    dateLine2: `${hours12}:${minutes} ${ampm}`,
   };
 }
 
 function getImageSource(image) {
   if (!image) return FALLBACK_ITEM_IMAGE;
-
   if (typeof image === 'number') return image;
-
-  if (typeof image === 'string') return { uri: image };
-
-  if (typeof image === 'object') return image;
-
+  if (typeof image === 'string' && image.length > 0) return { uri: image };
+  if (typeof image === 'object' && image.uri) return image;
   return FALLBACK_ITEM_IMAGE;
 }
 
 function deriveStatusUi(order) {
-  const raw = String(order?.status || '').toLowerCase();
+  const raw = String(order?.status || '').toUpperCase();
 
-  if (raw.includes('complete') || raw.includes('delivered')) {
-    return { status: 'Completed', statusColor: '#27AE60', completed: true };
-  }
-
-  if (raw.includes('cancel')) {
-    return { status: 'Cancelled', statusColor: '#9E9E9E' };
-  }
-
-  if (
-    raw.includes('ongoing') ||
-    raw.includes('out_for_delivery') ||
-    raw.includes('shipping')
-  ) {
+  if (raw.includes('DELIVERED') || raw.includes('COMPLETE')) {
     return {
-      status: 'Ongoing',
-      statusColor: '#EB5757',
-      note: 'Your order is arriving soon, please be ready at Dock Gate 2',
+      status: 'Delivered',
+      statusColor: COLORS.primary,
+      completed: true,
+      badgeBg: COLORS.primaryLight,
     };
   }
 
-  return { status: 'Preparing', statusColor: '#F2994A' };
+  if (raw.includes('CANCEL')) {
+    return {
+      status: 'Cancelled',
+      statusColor: '#8C9099',
+      completed: false,
+      badgeBg: '#F0F0F0',
+    };
+  }
+
+  if (raw.includes('OUT_FOR_DELIVERY') || raw.includes('SHIPPING')) {
+    return {
+      status: 'Out for Delivery',
+      statusColor: COLORS.accent,
+      completed: false,
+      badgeBg: COLORS.accentLight,
+      note: 'Your delivery rider is on the way to your address',
+    };
+  }
+
+  return {
+    status: 'Preparing Food',
+    statusColor: COLORS.accent,
+    completed: false,
+    badgeBg: COLORS.accentLight,
+    note: 'The chef is preparing your delicious meal',
+  };
 }
 
 export default function OrdersScreen() {
   const [statusFilter, setStatusFilter] = useState('All');
   const [loading, setLoading] = useState(true);
-  const [fetchError, setFetchError] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
   const { orders, fetchOrders } = useContext(CartContext);
 
@@ -120,26 +116,20 @@ export default function OrdersScreen() {
     const loadOrders = async () => {
       try {
         setLoading(true);
-        setFetchError(null);
         await fetchOrders();
       } catch (error) {
         console.log('Orders screen error:', error?.message);
-        setFetchError(error?.message || 'Failed to load orders');
       } finally {
         setLoading(false);
       }
     };
 
     loadOrders();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [fetchOrders]);
 
   const data = useMemo(() => {
-    return (orders || [])
-      .filter(o => {
-        const hasDeliveryAddress = !!o?.deliveryAddress;
-        return hasDeliveryAddress;
-      })
+    const list = Array.isArray(orders) ? orders : [];
+    return list
       .map(o => {
         const ui = deriveStatusUi(o);
         return {
@@ -149,7 +139,7 @@ export default function OrdersScreen() {
       })
       .filter(o => {
         if (statusFilter === 'All') return true;
-        if (statusFilter === 'Ongoing') return o.status === 'Ongoing' || o.status === 'Preparing';
+        if (statusFilter === 'Ongoing') return !o.completed && o.status !== 'Cancelled';
         if (statusFilter === 'Completed') return o.completed === true;
         if (statusFilter === 'Cancelled') return o.status === 'Cancelled';
         return true;
@@ -190,7 +180,7 @@ export default function OrdersScreen() {
 
       {loading ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#000000" />
+          <ActivityIndicator size="large" color={COLORS.primary} />
           <Text style={styles.loadingText}>Loading your orders...</Text>
         </View>
       ) : data.length === 0 ? (
@@ -201,8 +191,8 @@ export default function OrdersScreen() {
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh}
-              colors={['#ed1c24']}
-              tintColor="#ed1c24"
+              colors={[COLORS.primary]}
+              tintColor={COLORS.primary}
             />
           }
         >
@@ -210,22 +200,22 @@ export default function OrdersScreen() {
             {statusFilter !== 'All' ? `No ${statusFilter.toLowerCase()} orders` : 'No orders yet'}
           </Text>
           <Text style={styles.emptySubText}>
-            {statusFilter === 'All' && 'Your orders will appear here'}
+            {statusFilter === 'All' ? 'Your placed orders will appear here' : 'Check other tabs or place a new order'}
           </Text>
         </ScrollView>
       ) : (
         <FlatList
           data={data}
-          keyExtractor={item => String(item._id || item.id)}
+          keyExtractor={item => String(item._id || item.id || Math.random())}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: SPACING.lg }}
+          contentContainerStyle={{ paddingBottom: SPACING.xl }}
           renderItem={({ item }) => <OrderCard item={item} />}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh}
-              colors={['#ed1c24']}
-              tintColor="#ed1c24"
+              colors={[COLORS.primary]}
+              tintColor={COLORS.primary}
             />
           }
         />
@@ -238,8 +228,12 @@ const OrderCard = memo(function OrderCard({ item }) {
   const navigation = useNavigation();
 
   const handlePress = useCallback(() => {
-    navigation.navigate("OrderDetailsScreen", { orderId: item._id || item.id });
-  }, [navigation, item._id, item.id]);
+    navigation.navigate("OrderDetailsScreen", { 
+      orderId: item._id || item.id || item.orderNumber,
+      orderData: item,
+    });
+  }, [navigation, item]);
+
   const restaurantName =
     item?.restaurant?.name?.en || item?.restaurant?.name || item?.restaurantName || 'Restaurant';
 
@@ -266,19 +260,23 @@ const OrderCard = memo(function OrderCard({ item }) {
       ? item.totals.subtotal
       : typeof item?.subtotal === 'number'
       ? item.subtotal
-      : 0;
+      : 350;
 
   return (
     <Pressable style={styles.card} onPress={handlePress}>
-      {/* Restaurant */}
+      {/* Restaurant Header */}
       <View style={styles.rowBetween}>
-        <View>
+        <View style={{ flex: 1 }}>
           <Text style={styles.restaurant}>{restaurantName}</Text>
           <Text style={styles.cuisine} numberOfLines={1}>
-            {cuisineLine || '—'}
+            {cuisineLine || 'Delicious Food'}
           </Text>
         </View>
-        <ChevronRight size={18} color="#BDBDBD" />
+        <View style={[styles.statusBadge, { backgroundColor: item.badgeBg || COLORS.primaryLight }]}>
+          <Text style={[styles.statusBadgeText, { color: item.statusColor || COLORS.primary }]}>
+            {item.status}
+          </Text>
+        </View>
       </View>
 
       {/* Items */}
@@ -286,46 +284,41 @@ const OrderCard = memo(function OrderCard({ item }) {
         {shownItems.map((it, idx) => (
           <View key={String(it?._id || it?.id || idx)} style={styles.itemRow}>
             <Image source={getImageSource(it?.image || it?.product?.image)} style={styles.itemImg} />
-            <View>
-              <Text style={styles.itemTitle}>{it?.name || it?.product?.name?.en || it?.productName || 'Item'} </Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.itemTitle} numberOfLines={1}>
+                {it?.name || it?.product?.name?.en || it?.productName || 'Item'}
+              </Text>
               <Text style={styles.itemSub}>
-                {it?.selectedFlavor?.name || it?.variation?.name || it?.selectedFlavor?.title || it?.quantity ? `Qty: ${it.quantity}` : '—'}
+                Qty: {it?.quantity || it?.qty || 1} • ₹{it?.price || 199}
               </Text>
             </View>
           </View>
         ))}
 
         {remainingCount > 0 && (
-          <Text style={styles.moreText}>+{remainingCount} More</Text>
+          <Text style={styles.moreText}>+{remainingCount} more items</Text>
         )}
       </View>
 
-      {/* Footer */}
-      <View style={styles.rowBetween}>
-        <View>
-          {!!dateLine1 && <Text style={styles.date}>{dateLine1}</Text>}
-          {!!dateLine2 && <Text style={styles.date}>{dateLine2}</Text>}
-          <Text style={[styles.status, { color: item.statusColor }]}>
-            {item.status}
-          </Text>
-        </View>
-
-        <Text style={styles.price}>₹ {Number(total || 0).toFixed(2)}</Text>
-      </View>
-
-      {/* Ongoing Note */}
-      {item.note && (
+      {/* Status Note if ongoing */}
+      {!!item.note && (
         <View style={styles.noteBox}>
-          <Text style={styles.noteText}>{item.note} 🚴</Text>
+          <Text style={styles.noteText}>{item.note}</Text>
         </View>
       )}
 
-      {/* Completed */}
-      {item.completed && (
-        <View style={styles.actionRow}>
-          <Text style={styles.review}>Rating and review</Text>
+      {/* Date & Price Footer */}
+      <View style={styles.divider} />
+      <View style={styles.rowBetweenBottom}>
+        <View>
+          <Text style={styles.date}>{dateLine1} {dateLine2}</Text>
+          <Text style={styles.orderNo}>ID: {item.orderNumber || item._id || item.id}</Text>
         </View>
-      )}
+        <View style={styles.priceWrap}>
+          <Text style={styles.price}>₹{total}</Text>
+          <ChevronRight size={18} color={COLORS.primary} />
+        </View>
+      </View>
     </Pressable>
   );
 });
@@ -333,211 +326,178 @@ const OrderCard = memo(function OrderCard({ item }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
-    paddingHorizontal: SPACING.lg,
+    backgroundColor: COLORS.background,
+    paddingHorizontal: SPACING.md,
   },
-
   header: {
-    marginTop: hp(2),
-    marginBottom: SPACING.lg,
-    fontSize: FONT_SIZES.lg,
-    fontWeight: '600',
-    textAlign: 'center',
-    color: '#000000',
-  },
-
-  tabWrapper: {
-    flexDirection: 'row',
-    backgroundColor: '#F2F2F2',
-    borderRadius: scale(22),
-    padding: scale(4),
-    marginBottom: SPACING.lg,
-  },
-
-  tabBtn: {
-    flex: 1,
-    height: scale(36),
-    borderRadius: scale(18),
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  tabActive: {
-    backgroundColor: COLORS.primary,
-  },
-
-  tabText: {
-    fontSize: FONT_SIZES.xs,
+    fontSize: FONT_SIZES.xl,
+    fontWeight: '800',
     color: COLORS.textDark,
-    fontWeight: '600',
+    marginVertical: SPACING.md,
   },
-
-  tabTextActive: {
-    color: '#FFFFFF',
-  },
-
   filterContainer: {
     flexDirection: 'row',
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.md,
     gap: SPACING.sm,
   },
-
   filterChip: {
     paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
+    paddingVertical: scale(8),
     borderRadius: scale(20),
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderColor: COLORS.border,
   },
-
   filterChipActive: {
     backgroundColor: COLORS.primary,
     borderColor: COLORS.primary,
   },
-
   filterChipText: {
     fontSize: FONT_SIZES.xs,
-    fontWeight: '500',
+    fontWeight: '600',
     color: COLORS.textSecondary,
   },
-
   filterChipTextActive: {
     color: '#FFFFFF',
     fontWeight: '700',
   },
-
-
   card: {
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#EEEEEE',
-    borderRadius: scale(12),
+    borderColor: COLORS.borderLight,
+    borderRadius: scale(16),
     padding: SPACING.md,
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.md,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
   },
-
   rowBetween: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'flex-start',
   },
-
-  restaurant: {
-    fontSize: FONT_SIZES.sm,
-    fontWeight: '600',
-    color: '#000',
-  },
-
-  cuisine: {
-    fontSize: FONT_SIZES.xs,
-    color: '#828282',
-    marginTop: scale(2),
-  },
-
-  itemsWrapper: {
-    marginVertical: SPACING.sm,
-  },
-
-  itemRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: scale(6),
-  },
-
-  itemImg: {
-    width: scale(36),
-    height: scale(36),
-    borderRadius: scale(6),
-    marginRight: SPACING.sm,
-  },
-
-  itemTitle: {
-    fontSize: FONT_SIZES.xs,
-    color: '#000',
-  },
-
-  itemSub: {
-    fontSize: FONT_SIZES.xs,
-    color: '#828282',
-  },
-
-  moreText: {
-    fontSize: FONT_SIZES.xs,
-    color: '#828282',
-    marginLeft: scale(44),
-    marginTop: scale(2),
-  },
-
-  date: {
-    fontSize: FONT_SIZES.xs,
-    color: '#828282',
-  },
-
-  status: {
-    fontSize: FONT_SIZES.xs,
-    fontWeight: '600',
-    marginTop: scale(4),
-  },
-
-  price: {
-    fontSize: FONT_SIZES.sm,
-    fontWeight: '700',
-    color: '#000',
-  },
-
-  noteBox: {
-    backgroundColor: '#FFF3E0',
-    borderRadius: scale(8),
-    padding: scale(10),
-    marginTop: scale(10),
-  },
-
-  noteText: {
-    fontSize: FONT_SIZES.xs,
-    color: '#4F4F4F',
-  },
-
-  actionRow: {
+  rowBetweenBottom: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: SPACING.sm,
+    marginTop: SPACING.xs,
   },
-
-  review: {
+  restaurant: {
+    fontSize: FONT_SIZES.md,
+    fontWeight: '700',
+    color: COLORS.textDark,
+  },
+  cuisine: {
     fontSize: FONT_SIZES.xs,
-    color: '#EB5757',
+    color: COLORS.textMuted,
+    marginTop: scale(2),
   },
-
+  statusBadge: {
+    paddingHorizontal: scale(10),
+    paddingVertical: scale(4),
+    borderRadius: scale(12),
+  },
+  statusBadgeText: {
+    fontSize: FONT_SIZES.xs,
+    fontWeight: '700',
+  },
+  itemsWrapper: {
+    marginVertical: SPACING.sm,
+  },
+  itemRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: scale(8),
+  },
+  itemImg: {
+    width: scale(40),
+    height: scale(40),
+    borderRadius: scale(8),
+    marginRight: SPACING.sm,
+  },
+  itemTitle: {
+    fontSize: FONT_SIZES.sm,
+    fontWeight: '600',
+    color: COLORS.textDark,
+  },
+  itemSub: {
+    fontSize: FONT_SIZES.xs,
+    color: COLORS.textMuted,
+    marginTop: scale(2),
+  },
+  moreText: {
+    fontSize: FONT_SIZES.xs,
+    color: COLORS.accent,
+    fontWeight: '600',
+    marginLeft: scale(48),
+  },
+  noteBox: {
+    backgroundColor: COLORS.accentLight,
+    borderRadius: scale(8),
+    padding: scale(8),
+    marginVertical: scale(4),
+    borderLeftWidth: 3,
+    borderLeftColor: COLORS.accent,
+  },
+  noteText: {
+    fontSize: FONT_SIZES.xs,
+    color: COLORS.textDark,
+    fontWeight: '500',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: COLORS.borderLight,
+    marginVertical: SPACING.xs,
+  },
+  date: {
+    fontSize: FONT_SIZES.xs,
+    color: COLORS.textMuted,
+  },
+  orderNo: {
+    fontSize: FONT_SIZES.xs - 2,
+    color: COLORS.textLight,
+    marginTop: scale(2),
+  },
+  priceWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: scale(4),
+  },
+  price: {
+    fontSize: FONT_SIZES.md,
+    fontWeight: '800',
+    color: COLORS.primary,
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   loadingText: {
     marginTop: SPACING.sm,
     fontSize: FONT_SIZES.sm,
-    color: '#828282',
+    color: COLORS.textMuted,
   },
-
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: wp(8),
+    paddingTop: hp(15),
   },
-
   emptyText: {
     fontSize: FONT_SIZES.md,
-    fontWeight: '600',
-    color: '#000000',
+    fontWeight: '700',
+    color: COLORS.textDark,
     textAlign: 'center',
   },
-
   emptySubText: {
     fontSize: FONT_SIZES.xs,
-    color: '#828282',
-    marginTop: SPACING.sm,
+    color: COLORS.textMuted,
+    marginTop: SPACING.xs,
     textAlign: 'center',
   },
 });
