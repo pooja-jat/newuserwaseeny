@@ -30,6 +30,7 @@ import { wp, hp } from '../utils/responsive';
 import { scale } from '../utils/scale';
 import { FONT_SIZES } from '../theme/typography';
 import { SPACING } from '../theme/spacing';
+import { COLORS } from '../theme/colors';
 
 export default function ReviewOrderScreen() {
   const navigation = useNavigation();

@@ -27,6 +27,7 @@ export default function OrderConfirmedModal({
   orderId,
   onViewDetails,
   onExploreMenu,
+  onClose,
   status = 'success',
   errorMessage,
 }) {
@@ -223,7 +224,7 @@ export default function OrderConfirmedModal({
                 </>
               ) : (
                 <Pressable
-                  onPress={onClose}
+                  onPress={onClose || onExploreMenu}
                   style={({ pressed }) => [
                     styles.primaryBtn,
                     pressed && styles.btnPressed,

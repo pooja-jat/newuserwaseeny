@@ -15,6 +15,7 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import useHideTabBar from '../../utils/hooks/useHideTabBar';
 import apiClient from '../../config/apiClient';
 import { getAddresses, deleteAddress as deleteAddressApi } from '../../services/addressService';
+import { COLORS } from '../../theme/colors';
 
 const { width, height } = Dimensions.get('window');
 

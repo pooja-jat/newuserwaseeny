@@ -11,10 +11,12 @@ import {
   Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 import ReasonSheetModal from '../../components/ReasonSheetModal';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useHideTabBar from '../../utils/hooks/useHideTabBar';
 import { deleteAccount } from '../../services/userService';
+import { COLORS } from '../../theme/colors';
 
 const checklist = [
   {

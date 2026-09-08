@@ -16,7 +16,7 @@ import { ChevronRight } from 'lucide-react-native';
 
 import { CartContext } from '../../context/CartContext';
 import { useNavigation } from '@react-navigation/native';
-import { wp } from '../../utils/responsive';
+import { wp, hp } from '../../utils/responsive';
 import { scale } from '../../utils/scale';
 import { FONT_SIZES } from '../../theme/typography';
 import { SPACING } from '../../theme/spacing';
